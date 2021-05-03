@@ -1,5 +1,9 @@
 #!/usr/bin/python3
+"""
+This script applies all modified files located under the /html/ directory to the /html/dev/ directory.
+"""
 import os, shutil
+
 
 class TextOutput:
     PURPLE = '\033[95m'
@@ -66,10 +70,14 @@ def copy_differing_files(files, source_dir, target_dir):
 
 
 if __name__ == "__main__":
+    base_dir = os.path.dirname(os.path.realpath(__file__))
+
     # Directory where the modified GOCDB files are located
-    source_dir = "/home/tak/proj/sciencemesh-wwu/gocdb-container/webserver/html/gocdb"
+    source_dir = os.path.join(base_dir, "html/gocdb")
     # Target directory for all modified and new files
-    target_dir = "/home/tak/proj/sciencemesh-wwu/gocdb-container/webserver/html.dev/gocdb"
+    target_dir = os.path.join(base_dir, "html.dev/gocdb")
+    TextOutput.print(source_dir)
+    TextOutput.print(target_dir)
 
     # Gather all differing and new files
     differing_files = gather_differing_files(source_dir)

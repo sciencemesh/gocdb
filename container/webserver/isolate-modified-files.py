@@ -1,4 +1,8 @@
 #!/usr/bin/python3
+"""
+This script compares the files in /html.dev/gocdb to the original sources downloaded from the official GOCDB repository.
+Differing or new files are then copied to /html.mod/gocdb. This should be copied to /html/gocdb after verification.
+"""
 import os, requests, tarfile, filecmp, shutil
 
 
@@ -97,7 +101,7 @@ def copy_differing_files(files, source_dir, target_dir):
     TextOutput.print(f"Copying {len(files)} new and modified files:")
 
     # Remove all previously copied files
-    shutil.rmtree(target_dir)
+    shutil.rmtree(target_dir, ignore_errors=True)
 
     # Copy each modified or new file to the target directory, creating any missing folders
     for filename in files:
@@ -116,12 +120,14 @@ def copy_differing_files(files, source_dir, target_dir):
 
 
 if __name__ == "__main__":
+    base_dir = os.path.dirname(os.path.realpath(__file__))
+
     # Directory where the modified GOCDB files are located
-    source_dir = "/home/tak/proj/sciencemesh-wwu/gocdb-container/webserver/html.dev/gocdb"
+    source_dir = os.path.join(base_dir, "html.dev/gocdb")
     # Destination directory for download and extraction
     dest_dir = "/tmp"
     # Target directory for all modified and new files
-    target_dir = "/home/tak/proj/sciencemesh-wwu/gocdb-container/webserver/html/gocdb"
+    target_dir = os.path.join(base_dir, "html.mod/gocdb")
 
     # Download the archive...
     gocdb_archive = fetch_gocdb(dest_dir)
@@ -139,4 +145,4 @@ if __name__ == "__main__":
 
     # Clean up downloaded files
     os.remove(gocdb_archive)
-    shutil.rmtree(gocdb_sources)
+    shutil.rmtree(gocdb_sources, ignore_errors=True)
