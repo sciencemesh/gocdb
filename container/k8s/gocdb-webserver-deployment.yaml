@@ -1,0 +1,28 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  labels:
+    cb.service: gocdb-webserver
+  name: gocdb-webserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      cb.service: gocdb-webserver
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        cb.service: gocdb-webserver
+    spec:
+      containers:
+        - name: gocdb-webserver
+          image: omnivox/gocdb-webserver:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          env:
+            - name: GOCDB_DATABASE_SERVER
+              value: gocdb-database
+      restartPolicy: Always
