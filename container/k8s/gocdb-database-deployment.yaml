@@ -28,8 +28,14 @@ spec:
           volumeMounts:
             - mountPath: /var/lib/mysql
               name: data
+            - mountPath: /docker-entrypoint-initdb.d/01-gocdb_data.sql
+              subPath: 01-gocdb_data.sql
+              name: init-data
       restartPolicy: Always
       volumes:
         - name: data
           persistentVolumeClaim:
             claimName: gocdb-database-pvc
+        - name: init-data
+          configMap:
+            name: gocdb-database-data
