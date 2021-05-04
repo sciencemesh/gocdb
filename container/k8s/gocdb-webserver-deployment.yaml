@@ -25,4 +25,12 @@ spec:
           env:
             - name: GOCDB_DATABASE_SERVER
               value: gocdb-database
+          volumeMounts:
+            - mountPath: /var/www/html/gocdb/config/local_info.xml
+              subPath: local_info.xml
+              name: config
       restartPolicy: Always
+      volumes:
+        - name: config
+          configMap:
+            name: gocdb-config
