@@ -15,9 +15,9 @@
               in your apache httpd config (see sample 'gocdbssl.conf' file).
             - Do not terminate these values with a '/' char.
             -->
-            <web_portal_url>https://sciencemesh-test.uni-muenster.de/testdb</web_portal_url>
-            <pi_url>https://sciencemesh-test.uni-muenster.de/testdb/gocdbpi</pi_url>
-            <server_base_url>https://sciencemesh-test.uni-muenster.de/testdb</server_base_url>
+            <web_portal_url>https://sciencemesh-test.uni-muenster.de/gocdb</web_portal_url>
+            <pi_url>https://sciencemesh-test.uni-muenster.de/gocdb/gocdbpi</pi_url>
+            <server_base_url>https://sciencemesh-test.uni-muenster.de/gocdb</server_base_url>
             <write_api_user_docs_url>https://wiki.egi.eu/wiki/GOCDB/Write_API/Technical_Documentation</write_api_user_docs_url>
 
             <optional_features>
@@ -80,15 +80,6 @@
               removed from all the child Sites - this is intentionally different from the Site->Service relationship.
             -->
             <reserved_scopes>
-                <scope>wlcg</scope>
-                <scope>tier1</scope>
-                <scope>tier2</scope>
-                <scope>alice</scope>
-                <scope>atlas</scope>
-                <scope>cms</scope>
-                <scope>lhcb</scope>
-                <scope>elixir</scope>
-                <scope>FedCloud</scope>
             </reserved_scopes>
 
             <!-- Define the max amount of extensions a user can define when using the extensions feature -->
