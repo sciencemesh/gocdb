@@ -9,9 +9,9 @@ data:
     <?xml version="1.0" encoding="UTF-8"?>
     <schema>
             <local_info>
-                <web_portal_url>https://sciencemesh-test.uni-muenster.de/testdb</web_portal_url>
-                <pi_url>https://sciencemesh-test.uni-muenster.de/testdb/gocdbpi</pi_url>
-                <server_base_url>https://sciencemesh-test.uni-muenster.de/testdb</server_base_url>
+                <web_portal_url>https://gocdb.sciencemesh.uni-muenster.de/gocdb</web_portal_url>
+                <pi_url>https://gocdb.sciencemesh.uni-muenster.de/gocdb/gocdbpi</pi_url>
+                <server_base_url>https://gocdb.sciencemesh.uni-muenster.de/gocdb</server_base_url>
                 <write_api_user_docs_url>https://wiki.egi.eu/wiki/GOCDB/Write_API/Technical_Documentation</write_api_user_docs_url>
 
                 <optional_features>

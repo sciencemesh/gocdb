@@ -3,13 +3,18 @@ apiVersion: networking.k8s.io/v1beta1
 metadata:
   name: gocdb-ingress
   annotations:
-    kubernetes.io/ingress.class: traefik
-    traefik.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  - http:
+  - host: gocdb.sciencemesh.uni-muenster.de
+    http:
       paths:
-      - path: /testdb
+      - path: /
         backend:
           serviceName: gocdb-webserver
           servicePort: 8080
+  tls:
+  - secretName: sciencemesh-tls
+    hosts:
+      - iop.sciencemesh.uni-muenster.de
