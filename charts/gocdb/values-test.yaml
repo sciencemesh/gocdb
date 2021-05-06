@@ -1,0 +1,11 @@
+webserver:
+  url: "https://gocdb.sciencemesh.uni-muenster.de"
+
+  ingress:
+    enabled: true
+    hostname: "gocdb.sciencemesh.uni-muenster.de"
+    path: /
+    tls: {}
+    annotations:
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/rewrite-target: /

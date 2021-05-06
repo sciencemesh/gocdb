@@ -1,0 +1,58 @@
+replicaCount: 1
+
+# Configure the webserver
+webserver:
+  # The database image to use
+  image:
+    repository: omnivox/gocdb-webserver
+    tag: latest
+    pullPolicy: Always
+
+  # The main URL of the GOCDB instance (without the trailing /gocdb)
+  url: ""
+
+  # Configure the service of the webserver
+  service:
+    type: ClusterIP
+    port: 8080
+
+  ingress:
+    enabled: false
+    hostname: ""
+    path: /
+    tls: {}
+    annotations: {}
+
+  # Additional environment variables in the form of a key-value dictionary
+  env: {}
+
+# Configure the database
+database:
+  # The database image to use
+  image:
+    repository: omnivox/gocdb-database
+    tag: latest
+    pullPolicy: Always
+
+  # The data used to initially populate the database
+  initialData: ""
+
+  # Configure the persistent volume used by the database
+  persistentVolume:
+    # If defined, PVC MUST be created manually before volume will be bound
+    existingClaim: ""
+
+    # The size of the PVC
+    size: 1Gi
+
+    # The storage class name
+    storageClass: ""
+
+    # Any extra annotations
+    annotations: {}
+
+  # The password for the root user; if none is set, a random one is generated
+  rootPassword: ""
+
+  # Additional environment variables in the form of a key-value dictionary
+  env: {}

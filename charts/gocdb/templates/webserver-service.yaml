@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ include "gocdb.fullname" . }}-webserver
+  labels:
+    {{- include "gocdb.webserverLabels" . | nindent 4 }}
+spec:
+  type: {{ .Values.webserver.service.type }}
+  selector:
+    {{- include "gocdb.webserverSelectorLabels" . | nindent 6 }}
+  ports:
+    - name: "http"
+      port: {{ .Values.webserver.service.port }}
+      targetPort: 80

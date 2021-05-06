@@ -1,0 +1,20 @@
+apiVersion: v2
+name: gocdb
+description: GOCDB is a repository for storing and presenting mesh topology and resources information.
+type: application
+version: 0.1.0
+appVersion: 5.7.5
+home: https://wiki.egi.eu/wiki/GOCDB
+sources:
+  - https://github.com/GOCDB/gocdb
+maintainers:
+  - name: Daniel-WWU-IT
+    email: daniel.mueller@uni-muenster.de
+keywords:
+  - eosc-hub
+  - egi
+  - grid
+  - mesh
+  - topology
+  - gocdb
+  - sciencemesh

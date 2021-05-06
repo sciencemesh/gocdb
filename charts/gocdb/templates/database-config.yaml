@@ -1,0 +1,11 @@
+{{- if .Values.database.initialData }}
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ include "gocdb.fullname" . }}-database-config
+  labels:
+    {{- include "gocdb.databaseLabels" . | nindent 4 }}
+data:
+  01-gocdb_data.sql: |-
+    {{ .Values.database.initialData | nindent 4 }}
+{{- end }}
