@@ -9,7 +9,9 @@ metadata:
   {{- end }}
 spec:
   rules:
-  - host: {{ required "The ingress hostname (webserver.hostname) must be specified" .Values.webserver.ingress.hostname }}
+  - {{- if .Values.webserver.ingress.hostname }}
+    host: {{ .Values.webserver.ingress.hostname }}
+    {{- end }}
     http:
       paths:
       - path: {{ .Values.webserver.ingress.path }}
