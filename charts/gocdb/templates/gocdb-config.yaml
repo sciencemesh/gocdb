@@ -1,15 +1,15 @@
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: {{ include "gocdb.fullname" . }}-webserver-config
+  name: {{ include "gocdb.fullname" . }}-config
   labels:
-    {{- include "gocdb.webserverLabels" . | nindent 4 }}
+    {{- include "gocdb.labels" . | nindent 4 }}
 data:
   local_info.xml: |
     <?xml version="1.0" encoding="UTF-8"?>
     <schema>
             <local_info>
-                {{- $url := (required "The webserver URL (webserver.url) must be set" .Values.webserver.url) }}
+                {{- $url := (required "The webserver URL must be set" .Values.url) }}
                 <web_portal_url>{{ $url }}/gocdb</web_portal_url>
                 <pi_url>{{ $url }}/gocdbpi</pi_url>
                 <server_base_url>{{ $url }}/gocdb</server_base_url>

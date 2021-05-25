@@ -1,29 +1,29 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: {{ include "gocdb.fullname" . }}-webserver
+  name: {{ include "gocdb.fullname" . }}
   labels:
-    {{- include "gocdb.webserverLabels" . | nindent 4 }}
+    {{- include "gocdb.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "gocdb.webserverSelectorLabels" . | nindent 6 }}
+      {{- include "gocdb.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "gocdb.webserverSelectorLabels" . | nindent 8 }}
+        {{- include "gocdb.selectorLabels" . | nindent 8 }}
     spec:
       containers:
-        - name: {{ include "gocdb.fullname" . }}-webserver
-          image: "{{ .Values.webserver.image.repository }}:{{ .Values.webserver.image.tag }}"
-          imagePullPolicy: {{ .Values.webserver.image.pullPolicy }}
+        - name: {{ include "gocdb.fullname" . }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: 80
           env:
             - name: GOCDB_DATABASE_SERVER
               value: {{ include "gocdb.fullname" . }}-database
-            {{- range $name, $value := .Values.webserver.env }}
+            {{- range $name, $value := .Values.env }}
             - name: "{{ $name }}"
               value: "{{ $value }}"
             {{- end }}
@@ -35,4 +35,4 @@ spec:
       volumes:
         - name: config
           configMap:
-            name: {{ include "gocdb.fullname" . }}-webserver-config
+            name: {{ include "gocdb.fullname" . }}-config

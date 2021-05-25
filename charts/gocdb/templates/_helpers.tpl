@@ -40,16 +40,7 @@ helm.sh/chart: {{ include "gocdb.chart" . }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
-{{- end }}
-
-{{- define "gocdb.databaseLabels" -}}
-{{ include "gocdb.labels" . }}
-{{ include "gocdb.databaseSelectorLabels" . }}
-{{- end }}
-
-{{- define "gocdb.webserverLabels" -}}
-{{ include "gocdb.labels" . }}
-{{ include "gocdb.webserverSelectorLabels" . }}
+{{ include "gocdb.selectorLabels" . }}
 {{- end }}
 
 {{/*
@@ -57,36 +48,5 @@ Selector labels
 */}}
 {{- define "gocdb.selectorLabels" -}}
 app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/name: {{ include "gocdb.name" . }}
 {{- end }}
-
-{{- define "gocdb.databaseSelectorLabels" -}}
-{{- include "gocdb.selectorLabels" . }}
-app.kubernetes.io/name: {{ include "gocdb.name" . }}-database
-{{- end }}
-
-{{- define "gocdb.webserverSelectorLabels" -}}
-{{- include "gocdb.selectorLabels" . }}
-app.kubernetes.io/name: {{ include "gocdb.name" . }}-webserver
-{{- end }}
-
-{{/*
-Ingress API
-*/}}
-{{- define "gocdb.ingressAPIVersion" -}}
-{{- if .Capabilities.APIVersions.Has "networking.k8s.io/v1" }}
-{{- print "networking.k8s.io/v1" -}}
-{{- else }}
-{{- print "networking.k8s.io/v1beta1" -}}
-{{- end }}
-{{- end -}}
-
-{{/*
-Resource name helpers
-*/}}
-{{- define "gocdb.databasePVC" -}}
-{{- if not .Values.database.persistentVolume.existingClaim }}
-{{- include "gocdb.fullname" . }}-database-pvc
-{{- else }}
-{{- .Values.database.persistentVolume.existingClaim }}
-{{- end}}
-{{- end -}}

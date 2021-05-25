@@ -1,58 +1,45 @@
 replicaCount: 1
 
-# Configure the webserver
-webserver:
-  # The database image to use
-  image:
-    repository: omnivox/gocdb-webserver
-    tag: latest
-    pullPolicy: Always
+image:
+  repository: omnivox/gocdb-webserver
+  tag: latest
+  pullPolicy: Always
 
-  # The main URL of the GOCDB instance (without the trailing /gocdb)
-  url: ""
+# The main URL of the GOCDB instance (without the trailing /gocdb)
+url: ""
 
-  # Configure the service of the webserver
-  service:
-    type: ClusterIP
-    port: 8080
+# Configure the service of the webserver
+service:
+  type: ClusterIP
+  port: 8080
 
-  ingress:
-    enabled: false
-    hostname: ""
-    path: /
-    tls: {}
-    annotations: {}
+ingress:
+  enabled: false
+  hostname: ""
+  path: /
+  tls: {}
+  annotations: {}
 
-  # Additional environment variables in the form of a key-value dictionary
-  env: {}
+# Additional environment variables in the form of a key-value dictionary
+env: {}
 
-# Configure the database
+# Configure the database (uses the official MariaDB charts)
 database:
-  # The database image to use
-  image:
-    repository: omnivox/gocdb-database
-    tag: latest
-    pullPolicy: Always
+  nameOverride: database
 
-  # The data used to initially populate the database
-  initialData: ""
+  # Any SQL data that should be provisioned during deployment; if left empty, the default GOCDB data will be deployed
+  data: ""
 
-  # Configure the persistent volume used by the database
-  persistentVolume:
-    # If defined, PVC MUST be created manually before volume will be bound
-    existingClaim: ""
+  # Modify this to match your deployment name: <deployment-name>-database-config
+  initdbScriptsConfigMap: gocdb-database-config
 
-    # The size of the PVC
-    size: 1Gi
+  volumePermissions:
+    enabled: true
 
-    # The storage class name
-    storageClass: ""
+  primary:
+    service:
+      port: 3306
 
-    # Any extra annotations
-    annotations: {}
-
-  # The password for the root user; if none is set, a random one is generated
-  rootPassword: ""
-
-  # Additional environment variables in the form of a key-value dictionary
-  env: {}
+  secondary:
+    service:
+      port: 3306
