@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: omnivox/gocdb-webserver
+  repository: omnivox/gocdb
   tag: latest
   pullPolicy: Always
 
