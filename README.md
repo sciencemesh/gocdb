@@ -5,4 +5,4 @@ This repository contains all files for the [GOCDB](https://wiki.egi.eu/wiki/GOCD
 Since there is no official GOCDB container, one has been manually created for the project. All files can be found under [container](container/README.md).
 
 ## Charts
-Kubernetes manifests can be found in the `k8s` folder. Helm charts for easy deployment of the GOCDB can be found in the `charts` folder.
+Helm templates for easy deployment of the GOCDB can be found in the `charts` folder.
