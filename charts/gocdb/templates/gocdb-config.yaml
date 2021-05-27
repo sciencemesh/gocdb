@@ -6,39 +6,4 @@ metadata:
     {{- include "gocdb.labels" . | nindent 4 }}
 data:
   local_info.xml: |
-    <?xml version="1.0" encoding="UTF-8"?>
-    <schema>
-            <local_info>
-                {{- $url := (required "The webserver URL must be set" .Values.url) }}
-                <web_portal_url>{{ $url }}/gocdb</web_portal_url>
-                <pi_url>{{ $url }}/gocdbpi</pi_url>
-                <server_base_url>{{ $url }}/gocdb</server_base_url>
-                <write_api_user_docs_url>https://wiki.egi.eu/wiki/GOCDB/Write_API/Technical_Documentation</write_api_user_docs_url>
-
-                <optional_features>
-                    <siteless_services>false</siteless_services>
-                </optional_features>
-
-                <default_scope>
-                    <name>SM</name>
-                </default_scope>
-
-                <show_map_on_start_page>true</show_map_on_start_page>
-                <default_scope_match>all</default_scope_match>
-                <minimum_scopes>
-                    <ngi>1</ngi>
-                    <site>1</site>
-                    <service>1</service>
-                    <service_group>1</service_group>
-                </minimum_scopes>
-
-                <reserved_scopes>
-                </reserved_scopes>
-
-                <extensions>
-                    <max>20</max>
-                </extensions>
-
-                <send_email>false</send_email>
-            </local_info>
-    </schema>
+    {{- tpl (.Files.Get "data/config/local_info.xml") . | nindent 4 }}

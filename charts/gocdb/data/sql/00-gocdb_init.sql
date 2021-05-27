@@ -2,6 +2,6 @@
 CREATE DATABASE gocdb DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_bin;
 
 -- User creation
-CREATE USER 'gocdbuser'@'%' IDENTIFIED BY 'srgh85tz7sdgz2';
-GRANT ALL PRIVILEGES ON gocdb.* TO 'gocdbuser'@'%';
+CREATE USER '{{ .Values.database.gocdbUser.name }}'@'%' IDENTIFIED BY '{{ .Values.database.gocdbUser.password }}';
+GRANT ALL PRIVILEGES ON gocdb.* TO '{{ .Values.database.gocdbUser.name }}'@'%';
 FLUSH PRIVILEGES;

@@ -3,7 +3,7 @@ Docker files to provide a containerized version of GOCDB (https://wiki.egi.eu/wi
 
 The `html` directory contains all modified HTML files of the GOCDB that differ from the original version. The `html.dev` directory contains the entire source code of the GOCDB and can be used for custom modifications. To extract all modified files, use the `isolate-modified-files.py` script; these are placed in `html.mod`. It is also possible to reapply all modified files located under `html` to `html.dev` using the `apply-modified-files.py` script.
 
-various configuration files can be found in `config`; these are mainly used to configure the web server of the GOCDB.
+Various configuration files can be found in `config`; these are mainly used to configure the web server of the GOCDB and usually don't need to be modified.
 
 ## Running the containers
 Use the Helm templates provided in the `charts` directory to deploy the GOCDB in your Kubernetes cluster.

@@ -8,6 +8,9 @@ image:
 # The main URL of the GOCDB instance (without the trailing /gocdb)
 url: ""
 
+# The default GOCDB scope
+defaultScope: ""
+
 # Configure the service of the webserver
 service:
   type: ClusterIP
@@ -25,7 +28,10 @@ env: {}
 
 # Configure the database (uses the official MariaDB charts)
 database:
-  nameOverride: database
+  # The database user credentials to use for the GOCDB
+  gocdbUser:
+    name: "gocdbuser"
+    password: "gocdbpwd"
 
   # Any SQL data that should be provisioned during deployment; if left empty, the default GOCDB data will be deployed
   data: ""
@@ -33,13 +39,15 @@ database:
   # Modify this to match your deployment name: <deployment-name>-database-config
   initdbScriptsConfigMap: gocdb-database-config
 
+  # Default settings overrides
+  nameOverride: database
+
+  auth:
+    database: ""
+
   volumePermissions:
     enabled: true
 
   primary:
-    service:
-      port: 3306
-
-  secondary:
     service:
       port: 3306

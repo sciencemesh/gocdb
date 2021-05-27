@@ -1,4 +1,5 @@
 url: "https://sciencemesh-test.uni-muenster.de/testdb"
+defaultScope: "SM"
 
 # Configure the service of the webserver
 service:

@@ -1,0 +1,8 @@
+Your GOCDB has been deployed!
+
+To reach your GOCDB instance, point your browser to:
+{{ .Values.url | trim }}/gocdb
+
+The following GOCDB database user has been created:
+  Name:     {{ .Values.database.gocdbUser.name }}
+  Password: {{ .Values.database.gocdbUser.password }}

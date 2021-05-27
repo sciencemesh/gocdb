@@ -4,10 +4,10 @@ metadata:
   name: {{ include "gocdb.fullname" . }}-database-config
 data:
   00-gocdb_init.sql: |-
-    {{ .Files.Get "data/sql/00-gocdb_init.sql" | nindent 4}}
+    {{- tpl (.Files.Get "data/sql/00-gocdb_init.sql") . | nindent 4 }}
   01-gocdb_data.sql: |-
     {{- if .Values.database.data -}}
-      {{ .Values.database.data | nindent 4 }}
+      {{- .Values.database.data | nindent 4 }}
     {{- else -}}
-      {{ .Files.Get "data/sql/01-gocdb_data.sql" | nindent 4}}
+      {{- .Files.Get "data/sql/01-gocdb_data.sql" | nindent 4 }}
     {{- end -}}

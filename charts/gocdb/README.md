@@ -23,6 +23,7 @@ The following configurations may be set:
 | `image.tag` | The image tag to use. | `latest` |
 | `image.pullPolicy` | 	The kubernetes image pull policy. | `Always` |
 | `url` | The main URL of the GOCDB instance (without the trailing /gocdb). | `""` |
+| `defaultScope` | The default GOCDB scope. | `""` |
 | `service.type` | The kubernetes service type to use. | `ClusterIP` |
 | `service.port` | The service port to use. | `8080` |
 | `ingress.enabled` | Whether to create an ingress resource for the GOCDB. | `false` |
@@ -36,6 +37,8 @@ The GOCDB uses a MariaDB database to store its data. Its configuration can be ac
 
 | Setting | Description | Default |
 | --- | --- | --- |
+| `database.gocdbUser.name` | The username of the GOCDB database user. | `gocdbuser` |
+| `database.gocdbUser.password` | The password of the GOCDB database user. | `gocdbpwd` |
 | `database.data` | SQL data to use to deploy the GOCDB database. | `""` |
 
 If you want to deploy existing data stored in a SQL file, you can use a command like this:
