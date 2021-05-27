@@ -71,21 +71,21 @@ $config = Setup::createAnnotationMetadataConfiguration(array(__DIR__."/entities"
 
 
     ///////////////////////MYSQL CONNECTION DETAILS////////////////////////////////////////////
-    $gocdb_db_server = getenv("GOCDB_DATABASE_SERVER");
+    $gocdb_db_server = getenv("DATABASE_SERVER");
     if ($gocdb_db_server == false)
-        die('The environment variable GOCDB_DATABASE_SERVER has not been set.');
+        die('The environment variable DATABASE_SERVER has not been set.');
 
-    $gocdb_db_port = getenv("GOCDB_DATABASE_PORT");
+    $gocdb_db_port = getenv("DATABASE_PORT");
     if ($gocdb_db_port == false)
         $gocdb_db_port = 3306;
 
-    $gocdb_db_user_name = getenv("GOCDB_DATABASE_USER_NAME");
+    $gocdb_db_user_name = getenv("DATABASE_USER_NAME");
     if ($gocdb_db_user_name == false)
         $gocdb_db_user_name = 'gocdbuser';
 
-    $gocdb_db_user_pwd = getenv("GOCDB_DATABASE_USER_PASSWORD");
+    $gocdb_db_user_pwd = getenv("DATABASE_USER_PASSWORD");
     if ($gocdb_db_user_pwd == false)
-        die('The environment variable GOCDB_DATABASE_USER_PASSWORD has not been set.');
+        die('The environment variable DATABASE_USER_PASSWORD has not been set.');
 
     $conn = array(
     	'driver' => 'pdo_mysql',

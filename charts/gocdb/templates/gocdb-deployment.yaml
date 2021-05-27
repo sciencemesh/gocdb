@@ -21,13 +21,13 @@ spec:
           ports:
             - containerPort: 80
           env:
-            - name: GOCDB_DATABASE_SERVER
+            - name: DATABASE_SERVER
               value: "{{ include "gocdb.fullname" . }}-{{ .Values.database.nameOverride }}"
-            - name: GOCDB_DATABASE_PORT
+            - name: DATABASE_PORT
               value: "{{ .Values.database.primary.service.port }}"
-            - name: GOCDB_DATABASE_USER_NAME
+            - name: DATABASE_USER_NAME
               value: "{{ .Values.database.gocdbUser.name }}"
-            - name: GOCDB_DATABASE_USER_PASSWORD
+            - name: DATABASE_USER_PASSWORD
               value: "{{ .Values.database.gocdbUser.password }}"
             {{- range $name, $value := .Values.env }}
             - name: "{{ $name }}"
