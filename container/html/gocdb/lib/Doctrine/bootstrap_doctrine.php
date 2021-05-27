@@ -90,9 +90,9 @@ $config = Setup::createAnnotationMetadataConfiguration(array(__DIR__."/entities"
     $conn = array(
     	'driver' => 'pdo_mysql',
         'host' => $gocdb_db_server,
-        'port' => intval($gocdb_db_port),
-    	'user' => $gocdb_db_user_name,
-    	'password' => $gocdb_db_user_pwd,
+        //'port' => intval($gocdb_db_port),
+    	'user' => 'gocdbuser',
+    	'password' => 'gocdbpwd',
     	'dbname' => 'gocdb'
     );
     /////////////////////////////////////////////////////////////////////////////////////////////
