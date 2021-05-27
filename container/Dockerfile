@@ -1,22 +1,19 @@
 # Dockerfile -- Webserver for GOCDB based on PHP5-Apache
 #
 # Author:   Daniel Mueller/University of Muenster (daniel.mueller@uni-muenster.de)
-# Date:     2020-05-04
-# Version:  1.0
-#
-# Note:     This file is considered experimental and should be used with care.
-#           It is neither meant to be efficient nor secure.
+# Date:     2021-05-27
+# Version:  1.1
 
 FROM    php:5-apache
 LABEL   maintainer "daniel.mueller@uni-muenster.de"
-LABEL   description "Webserver container for GOCDB"
+LABEL   description "Container for GOCDB"
 
 # The GOCDB version number to use
 ENV     GOCDB_VERSION="5.7.5"
 
 # Needed for Doctrine
 RUN     mkdir -p /usr/local/doctrine
-COPY    config/composer.json /usr/local/doctrine
+COPY    config/composer/composer.json /usr/local/doctrine
 ENV     PATH="/usr/local/doctrine/vendor/bin:${PATH}"
 
 # Install additional dependencies, the GOCDB source files, etc.
@@ -37,9 +34,9 @@ RUN     apt-get update && \
         rm -f gocdb.tar.gz
 
 # Add GOCDB as a virtual host
-COPY    config/000-default.conf /etc/apache2/sites-available
+COPY    config/apache/000-default.conf /etc/apache2/sites-available
 # Override the default PHP settings
-COPY    config/php.ini $PHP_INI_DIR/
+COPY    config/php/php.ini $PHP_INI_DIR/
 
 # Last but not least, copy the modified website contents
 COPY    html/ /var/www/html
