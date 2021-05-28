@@ -1,11 +1,6 @@
 url: "https://sciencemesh-test.uni-muenster.de/testdb"
 defaultScope: "SM"
 
-# Configure the service of the webserver
-service:
-  type: ClusterIP
-  port: 8080
-
 ingress:
   enabled: true
   path: /testdb
