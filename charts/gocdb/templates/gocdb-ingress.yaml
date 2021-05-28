@@ -17,7 +17,7 @@ spec:
       - path: {{ .Values.ingress.path }}
         backend:
           serviceName: {{ include "gocdb.fullname" . }}
-          servicePort: {{ .Values.service.port }}
+          servicePort: 8080
   {{- if .Values.ingress.tls }}
   tls:
     {{ toYaml .Values.ingress.tls | nindent 4 }}
