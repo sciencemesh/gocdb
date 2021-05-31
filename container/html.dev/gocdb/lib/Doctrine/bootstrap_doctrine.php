@@ -4,7 +4,7 @@
 // See :doc:`Configuration <../reference/configuration>` for up to date autoloading details.
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\Common\EventManager;
-use Doctrine\DBAL\Event\Listeners\OracleSessionInit;
+// use Doctrine\DBAL\Event\Listeners\OracleSessionInit;
 
 // Load Doctrine (via composer OR pear):
 // Via composer
