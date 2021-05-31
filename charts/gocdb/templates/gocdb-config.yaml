@@ -5,5 +5,7 @@ metadata:
   labels:
     {{- include "gocdb.labels" . | nindent 4 }}
 data:
+  htaccess: |
+    {{- tpl (.Files.Get "data/apache/.htaccess") . | nindent 4 }}
   local_info.xml: |
     {{- tpl (.Files.Get "data/config/local_info.xml") . | nindent 4 }}

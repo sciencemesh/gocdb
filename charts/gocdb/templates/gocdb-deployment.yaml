@@ -34,6 +34,9 @@ spec:
               value: "{{ $value }}"
             {{- end }}
           volumeMounts:
+            - mountPath: /var/www/html/.htaccess
+              subPath: htaccess
+              name: config
             - mountPath: /var/www/html/gocdb/config/local_info.xml
               subPath: local_info.xml
               name: config
