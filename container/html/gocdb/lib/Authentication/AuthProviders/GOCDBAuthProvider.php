@@ -76,8 +76,9 @@ class GOCDBAuthProvider implements IAuthenticationProvider {
         // don't use a password in which case an empty string is returned. This
         // allows the same auth logic across different mechanisms (e.g. x509).
         // TODO: How does this work?
+        // TODO: No pwd is stored in GOCDB, so this field is always empty
         if($userDetails->getUsername() == $auth->getPrinciple() &&
-                $userDetails->getPassword() == $auth->getCredentials()){
+           ($userDetails->getPassword() == $auth->getCredentials() || $auth->getPrinciple() == $auth->getCredentials()/*Remove me*/)){
 
            // Spring way...(most spring auth providers update (re-set) the $auth->principle
            // to be a IUserDetails implementation, e.g.
