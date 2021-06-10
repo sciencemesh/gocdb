@@ -40,7 +40,7 @@ class FirewallComponent implements IFirewallComponent {
         if ($auth == null) {
             // Initiate token creation
             // TODO: Do this properly
-            $token = new org\gocdb\security\authentication\UsernamePasswordAuthenticationToken("admin2", "admin2");
+            $token = new UsernamePasswordAuthenticationToken("admin", "admin");
         }
 
         return $auth;
