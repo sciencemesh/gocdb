@@ -40,7 +40,7 @@ class FirewallComponent implements IFirewallComponent {
         if ($auth == null) {
             // Initiate token creation
             // TODO: Do this properly
-            $auth = new UsernamePasswordAuthenticationToken("admin", "admin");
+            $auth = new UsernamePasswordAuthenticationToken("admin2", "admin2");
         }
 
         return $auth;
