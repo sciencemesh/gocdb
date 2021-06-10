@@ -6,6 +6,7 @@ use Doctrine\ORM\Tools\Setup;
 use Doctrine\Common\EventManager;
 // use Doctrine\DBAL\Event\Listeners\OracleSessionInit;
 
+// die('Ok, next step is to configure this file for your installation: '.__FILE__);
 // Load Doctrine (via composer OR pear):
 // Via composer
 // -------------
@@ -28,7 +29,6 @@ $isDevMode = true;
 // or if you prefer yaml or annotations
 $config = Setup::createAnnotationMetadataConfiguration(array(__DIR__."/entities"), $isDevMode);
 //$config = Setup::createYAMLMetadataConfiguration(array(__DIR__."/config/yaml"), $isDevMode);
-
 //
 // If you intend to use APC cache (recommended in production), then you need to
 // specify the following two lines and install APC cache (see GOCDB wiki):
@@ -96,7 +96,6 @@ $config = Setup::createAnnotationMetadataConfiguration(array(__DIR__."/entities"
     	'dbname' => 'gocdb'
     );
     /////////////////////////////////////////////////////////////////////////////////////////////
-
 
 // obtaining the entity manager
 $entityManager = \Doctrine\ORM\EntityManager::create($conn, $config, $evm);

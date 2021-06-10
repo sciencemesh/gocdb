@@ -378,6 +378,7 @@ class PIRequest {
     /* Authorize a user based on their certificate */
 
     function authAnyCert() {
+        // FIXME: Re-enable this to require proper authorization to access the PI
         /*
         if (empty($this->dn))
             die("<No valid certificate found. A trusted certificate is " .

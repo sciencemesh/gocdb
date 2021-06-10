@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-This script applies all modified files located under the /html/ directory to the /html/dev/ directory.
+This script applies all modified files located under the /html/ directory to the /html.dev/ directory.
 """
 import os, shutil
 
