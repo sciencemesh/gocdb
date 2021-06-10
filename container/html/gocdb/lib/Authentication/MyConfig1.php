@@ -75,6 +75,7 @@ class MyConfig1 implements IConfigFirewallComponent {
      * @return false
      */
     public function getCreateSession(){
+        // Allow storing the auth token in a session by enabling session creation first
         return true;
     }
 }
