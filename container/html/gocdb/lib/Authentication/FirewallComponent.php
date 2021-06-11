@@ -41,8 +41,13 @@ class FirewallComponent implements IFirewallComponent {
             // Initiate token creation
             // TODO: Do this properly
             $name = "admin";
-            if (isset($_GET["user"]))
+            if (isset($_GET["user"])) {
                 $name = $_GET["user"];
+                $_SESSION["ext_user"] = $name;
+            } else {
+                if (isset($_SESSION["ext_user"]))
+                    $name = $_SESSION["ext_user"];
+            }
             $auth = new UsernamePasswordAuthenticationToken($name, $name);
         }
 
