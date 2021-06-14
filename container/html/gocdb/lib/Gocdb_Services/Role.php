@@ -520,7 +520,7 @@ class Role extends AbstractEntityService{
             $roleType = $this->getRoleTypeByName($roleTypeName);
             $r = new \Role($roleType, $user, $entity, $roleStatus);
             $this->em->persist($r);
-            throw new Exception('Division by zero: ' . json_encode(get_object_vars($r)));
+            throw new \Exception('Division by zero: ' . print_r($r));
 
             // create a RoleActionRecord after role has been persisted (to get id)
             $rar = \RoleActionRecord::construct($user, $r, \RoleStatus::PENDING);
