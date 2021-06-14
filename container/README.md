@@ -17,6 +17,14 @@ GOCDB offers a comfortable web frontend to manage the topology of a mesh; it als
 
 For more details about GOCDB, visit the official documentation [here](https://wiki.egi.eu/wiki/GOCDB/Documentation_Index).
 
+## Changes made
+The following changes were made to the original GOCDB code:
+- Set up `bootstrap_doctrine.php`, allowing configuration via environment variables
+- Add simple username/password authentication
+- Allow login via `user=...` query parameter
+- Fix bug in `Role.php` not updating the Role record ID
+    - Also apply the same fix to a bunch of other files, just in case...
+
 ## Notes
 To make setting up and working with the GOCDB easy, user authentication was removed. This renders some features unusable, like applying user roles.
 
