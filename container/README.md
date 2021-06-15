@@ -19,10 +19,10 @@ For more details about GOCDB, visit the official documentation [here](https://wi
 
 ## Changes made
 The following changes were made to the original GOCDB code:
-- Set up `bootstrap_doctrine.php`, allowing configuration via environment variables
+- Set up `lib/Doctrine/bootstrap_doctrine.php`, allowing configuration via environment variables
 - Add simple username/password authentication
 - Allow login via `user=...` query parameter
-- Fix bug in `Role.php` not updating the Role record ID
+- Fix bug in `lib/Gocdb_Services/Role.php` not updating the Role record ID: After calling `em->persist`, `em->flush` has to be called to set generated values properly
     - Also apply the same fix to a bunch of other files, just in case...
 
 ## Notes
