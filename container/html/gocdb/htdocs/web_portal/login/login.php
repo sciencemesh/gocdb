@@ -13,6 +13,6 @@
     $_SESSION["auth_username"] = $username;
     $_SESSION["auth_password"] = $password;
 
-    header("Location: ../gocdb/");
+    header("Location: ../");
     exit;
 ?>
