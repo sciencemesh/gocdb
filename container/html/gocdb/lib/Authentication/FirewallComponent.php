@@ -55,8 +55,8 @@ class FirewallComponent implements IFirewallComponent {
                 $_SESSION["ext_username"] = $username;
                 $_SESSION["ext_password"] = $password;
             } catch (\Exception $e) {
-                throw $e;
-            }            
+                die($e);
+            }
         } else {
             if ($auth == null) {
                 if (isset($_SESSION["ext_username"]) && isset($_SESSION["ext_password"]))
