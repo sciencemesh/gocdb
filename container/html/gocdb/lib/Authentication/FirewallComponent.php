@@ -54,9 +54,6 @@ class FirewallComponent implements IFirewallComponent {
 
             if ($auth) {
                 $this->setAuthentication($auth);
-
-                $_SESSION["ext_username"] = $username;
-                $_SESSION["ext_password"] = $password;
             }
         } else if ($auth == null) {
             if (isset($_SESSION["ext_username"]) && isset($_SESSION["ext_password"])) {
@@ -73,6 +70,14 @@ class FirewallComponent implements IFirewallComponent {
      * @see ISecurityContext::setAuthentication($auth)
      */
     public function setAuthentication($auth = null){
+        if ($auth) {
+            $_SESSION["ext_username"] = $auth->getPrinciple();
+            $_SESSION["ext_password"] = $auth->getCredentials();
+        } else {
+            unset($_SESSION["ext_username"]);
+            unset($_SESSION["ext_password"]);
+        }
+
         return $this->securityContext->setAuthentication($auth);
     }
 

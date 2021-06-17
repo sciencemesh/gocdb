@@ -13,7 +13,7 @@ include_once __DIR__.'/../_autoload.php';
 class GOCDBAuthProvider implements IAuthenticationProvider {
     private $userDetailsService;
 
-    function __construct($userDetailsService) {
+    function __construct(IUserDetailsService $userDetailsService) {
        $this->userDetailsService = $userDetailsService;
     }
 

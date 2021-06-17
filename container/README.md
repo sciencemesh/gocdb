@@ -24,6 +24,7 @@ The following changes were made to the original GOCDB code:
 - Allow login via a simple form (located under `/gocdb/login/`)
 - Fix bug in `lib/Gocdb_Services/Role.php` not updating the Role record ID: After calling `em->persist`, `em->flush` has to be called to set generated values properly
     - Also apply the same fix to a bunch of other files, just in case...
+- The GOCDBAuthProvider used a non-existing class; fix by passing the required reference in the constructor
 
 ## Notes
 To make setting up and working with the GOCDB easy, user authentication was removed. This renders some features unusable, like applying user roles.
