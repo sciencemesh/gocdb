@@ -16,6 +16,6 @@
     $host = $_SERVER["HTTP_HOST"];
     $uri = rtrim(dirname($_SERVER["PHP_SELF"]), "/\\");
     die($host$uri);
-    header("Location: https://$host$uri/gocdb/");
+    header("Location: ../gocdb/");
     exit;
 ?>
