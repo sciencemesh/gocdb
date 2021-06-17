@@ -49,18 +49,16 @@ class FirewallComponent implements IFirewallComponent {
             unset($_SESSION["auth_username"]);
             unset($_SESSION["auth_password"]);
 
-            try {
-                $auth = $this->authenticate(new UsernamePasswordAuthenticationToken($username, $password));
+            $auth = $this->authenticateUsernamePassword($username, $password);
 
+            if ($auth) {
                 $_SESSION["ext_username"] = $username;
                 $_SESSION["ext_password"] = $password;
-            } catch (\Exception $e) {
-                die($e);
             }
-        } else {
-            if ($auth == null) {
-                if (isset($_SESSION["ext_username"]) && isset($_SESSION["ext_password"]))
-                    $auth = new UsernamePasswordAuthenticationToken($_SESSION["ext_username"], $_SESSION["ext_password"]);
+        } else if ($auth == null) {
+            if (isset($_SESSION["ext_username"]) && isset($_SESSION["ext_password"])) {
+                // Token was already authenticated
+                $auth = new UsernamePasswordAuthenticationToken($_SESSION["ext_username"], $_SESSION["ext_password"]);
             }
         }
 
@@ -99,4 +97,19 @@ class FirewallComponent implements IFirewallComponent {
         return false;
     }
 
+    private function authenticateUsernamePassword($username, $password) {
+        $auth = new UsernamePasswordAuthenticationToken($username, $password);
+
+        // TODO: Totally advanced security
+        if ($auth->getPrinciple() == $auth->getCredentials()) {
+            try {
+                $auth = $this->authenticate($auth);
+            } catch (\Exception $e) {
+            }
+        } else {
+            $auth = null;
+        }
+
+        return $auth;
+    }
 }
