@@ -37,18 +37,27 @@ class FirewallComponent implements IFirewallComponent {
      */
     public function getAuthentication(){
         $auth = $this->securityContext->getAuthentication();
-        if ($auth == null) {
-            // Initiate token creation
-            // TODO: Do this properly
-            $name = "admin";
-            if (isset($_GET["user"])) {
-                $name = $_GET["user"];
-                $_SESSION["ext_user"] = $name;
-            } else {
-                if (isset($_SESSION["ext_user"]))
-                    $name = $_SESSION["ext_user"];
+
+        // Initiate token creation
+        // TODO: Do this properly
+
+        // Check session variables first
+        $username = $_SESSION["auth_username"];
+        $password = $_SESSION["auth_password"];
+
+        if (isset($username) && isset($password)) {
+            unset($_SESSION["auth_username"]);
+            unset($_SESSION["auth_password"]);
+
+            $_SESSION["ext_username"] = $username;
+            $_SESSION["ext_password"] = $password;
+
+            $auth = new UsernamePasswordAuthenticationToken($username, $password);
+        } else {
+            if ($auth == null) {
+                if (isset($_SESSION["ext_username"]) && isset($_SESSION["ext_password"]))
+                    $auth = new UsernamePasswordAuthenticationToken($_SESSION["ext_username"], $_SESSION["ext_password"]);
             }
-            $auth = new UsernamePasswordAuthenticationToken($name, $name);
         }
 
         return $auth;
