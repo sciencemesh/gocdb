@@ -43,6 +43,8 @@ class FirewallComponent implements IFirewallComponent {
 
         // Check session variables first
         if (isset($_SESSION["auth_username"]) && isset($_SESSION["auth_password"])) {
+            $this->setAuthentication(null);
+
             $username = $_SESSION["auth_username"];
             unset($_SESSION["auth_username"]);
             $password = $_SESSION["auth_password"];

@@ -27,11 +27,11 @@ class MyConfig1 implements IConfigFirewallComponent {
     private $tokenClassList;
 
     function __construct() {
-       $this->providerList = array();
-       $this->providerList[] = new GOCDBAuthProvider();
-       //$this->providerList[] = new SampleAuthProvider();
-
        $this->gocdbUserDetailsService = new GOCDBUserDetailsService();
+
+       $this->providerList = array();
+       $this->providerList[] = new GOCDBAuthProvider($this->gocdbUserDetailsService);
+       //$this->providerList[] = new SampleAuthProvider();
 
        $this->tokenClassList = array();
        //$this->tokenClassList[] = 'org\gocdb\security\authentication\X509AuthenticationToken';

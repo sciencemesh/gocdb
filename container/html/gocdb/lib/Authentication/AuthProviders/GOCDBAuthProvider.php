@@ -11,6 +11,11 @@ include_once __DIR__.'/../_autoload.php';
  * @author David Meredith
  */
 class GOCDBAuthProvider implements IAuthenticationProvider {
+    private $userDetailsService;
+
+    function __construct($userDetailsService) {
+       $this->userDetailsService = $userDetailsService;
+    }
 
     public function authenticate(IAuthentication $auth){
         if($auth == null){
@@ -63,7 +68,7 @@ class GOCDBAuthProvider implements IAuthenticationProvider {
             //if($username instanceof IUserDetails) $username = $username->getUsername();
 
             // Now attempt to load the user's details from the DB
-            $userDetails = ApplicationSecurityConfigService::getUserDetailsService()->loadUserByUsername($username);
+            $userDetails = $this->userDetailsService->loadUserByUsername($username);
         } catch(UsernameNotFoundException $ex){
             // if auth->getPrinciple is not null, then this could be a
             // new user without a recognised DN ! so throwing an AuthException
