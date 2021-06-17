@@ -42,16 +42,17 @@ class FirewallComponent implements IFirewallComponent {
         // TODO: Do this properly
 
         // Check session variables first
-        $username = $_SESSION["auth_username"];
-        $password = $_SESSION["auth_password"];
-
-        if (isset($username) && isset($password)) {
+        if (isset($_SESSION["auth_username"]) && isset($_SESSION["auth_password"])) {
+            $username = $_SESSION["auth_username"];
             unset($_SESSION["auth_username"]);
+            $password = $_SESSION["auth_password"];
             unset($_SESSION["auth_password"]);
 
             $auth = $this->authenticateUsernamePassword($username, $password);
 
             if ($auth) {
+                $this->setAuthentication($auth);
+
                 $_SESSION["ext_username"] = $username;
                 $_SESSION["ext_password"] = $password;
             }
@@ -59,6 +60,7 @@ class FirewallComponent implements IFirewallComponent {
             if (isset($_SESSION["ext_username"]) && isset($_SESSION["ext_password"])) {
                 // Token was already authenticated
                 $auth = new UsernamePasswordAuthenticationToken($_SESSION["ext_username"], $_SESSION["ext_password"]);
+                $this->setAuthentication($auth);
             }
         }
 
