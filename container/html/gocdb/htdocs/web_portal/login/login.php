@@ -14,7 +14,8 @@
     $_SESSION["auth_password"] = $password;
 
     $host = $_SERVER["HTTP_HOST"];
-    die($host);
-    header("Location: https://$host/gocdb/");
+    $uri = rtrim(dirname($_SERVER["PHP_SELF"]), "/\\");
+    die($host$uri);
+    header("Location: https://$host$uri/gocdb/");
     exit;
 ?>
