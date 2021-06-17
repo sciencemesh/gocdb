@@ -13,9 +13,6 @@
     $_SESSION["auth_username"] = $username;
     $_SESSION["auth_password"] = $password;
 
-    $host = $_SERVER["HTTP_HOST"];
-    $uri = rtrim(dirname($_SERVER["PHP_SELF"]), "/\\");
-    die($host$uri);
     header("Location: ../gocdb/");
     exit;
 ?>
