@@ -77,7 +77,6 @@ class GOCDBAuthProvider implements IAuthenticationProvider {
         // allows the same auth logic across different mechanisms (e.g. x509).
         // TODO: How does this work?
         // TODO: No pwd is stored in GOCDB, so this field is always empty
-        die($userDetails->getUsername() . "; " . $auth->getPrinciple() . "; " . $userDetails->getPassword . "; " . $auth->getCredentials());
         if($userDetails->getUsername() == $auth->getPrinciple() &&
            ($userDetails->getPassword() == $auth->getCredentials() || $auth->getPrinciple() == $auth->getCredentials()/*Remove me*/)){
 

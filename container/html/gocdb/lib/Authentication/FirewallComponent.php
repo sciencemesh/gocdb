@@ -49,10 +49,14 @@ class FirewallComponent implements IFirewallComponent {
             unset($_SESSION["auth_username"]);
             unset($_SESSION["auth_password"]);
 
-            $_SESSION["ext_username"] = $username;
-            $_SESSION["ext_password"] = $password;
+            try {
+                $auth = $this->authenticate(new UsernamePasswordAuthenticationToken($username, $password));
 
-            $auth = new UsernamePasswordAuthenticationToken($username, $password);
+                $_SESSION["ext_username"] = $username;
+                $_SESSION["ext_password"] = $password;
+            } catch (\Exception $e) {
+                throw $e;
+            }            
         } else {
             if ($auth == null) {
                 if (isset($_SESSION["ext_username"]) && isset($_SESSION["ext_password"]))
