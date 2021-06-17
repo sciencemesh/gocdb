@@ -14,6 +14,6 @@
     $_SESSION["auth_password"] = $password;
 
     $host = $_SERVER["HTTP_HOST"];
-    header("Location: https://$host/gocdb");
+    header("Location: https://$host/gocdb/");
     exit;
 ?>
