@@ -52,7 +52,7 @@
         	</div>
         	<div>&nbsp;</div>
         	<div>
-        		<form id="loginform" method="POST" action="index.php?action=login" class="box container-inline" style="width: 100%;">
+        		<form id="loginform" method="POST" action="login.php" class="box container-inline" style="width: 100%;">
         			<div style="grid-row: 1;"><label for="username">Username: <span class="mandatory">*</span></label></div>
         			<div style="grid-row: 2;"><input type="text" id="username" name="username"/></div>
         			<div style="grid-row: 3;"><label for="password">Password: <span class="mandatory">*</span></label></div>
