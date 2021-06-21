@@ -1,8 +1,9 @@
 image:
   tag: user-auth
-  
+
 url: "https://sciencemesh-test.uni-muenster.de/testdb"
 defaultScope: "SM"
+apiKey: "test123"
 
 ingress:
   enabled: true
