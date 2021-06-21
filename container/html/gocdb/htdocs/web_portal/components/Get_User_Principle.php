@@ -167,6 +167,8 @@ function Get_User_Principle(){
  * @return string or null if can't authenticate request
  */
 function Get_User_Principle_PI() {
+    die($_SERVER['HTTP_ORIGIN']);
+
     $fwMan = \org\gocdb\security\authentication\FirewallComponentManager::getInstance();
     $firewallArray = $fwMan->getFirewallArray();
     try {
