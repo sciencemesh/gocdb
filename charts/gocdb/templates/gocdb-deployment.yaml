@@ -21,6 +21,8 @@ spec:
           ports:
             - containerPort: 80
           env:
+            - name: GOCDB_API_KEY
+              value: "{{ .Values.apiKey | default (randAlphaNum 12) }}"
             - name: DATABASE_SERVER
               value: "{{ include "gocdb.fullname" . }}-{{ .Values.database.nameOverride }}"
             - name: DATABASE_PORT

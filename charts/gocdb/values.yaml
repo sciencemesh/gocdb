@@ -11,6 +11,9 @@ url: ""
 # The default GOCDB scope
 defaultScope: ""
 
+# The API key used by the GOCDB PI; if left empty, a random one will be generated
+apiKey: ""
+
 # Configure the service of the webserver
 service:
   type: ClusterIP
