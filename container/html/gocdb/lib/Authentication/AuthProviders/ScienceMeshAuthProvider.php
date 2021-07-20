@@ -43,7 +43,7 @@ class ScienceMeshAuthProvider implements IAuthenticationProvider {
     public function supports(IAuthentication $auth){
         // Only accept ScientMesh tokens
         if ($auth instanceof ScienceMeshAuthToken) {
-            return true
+            return true;
         }
 
         return false;
