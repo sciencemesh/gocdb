@@ -23,6 +23,8 @@ spec:
           env:
             - name: GOCDB_API_KEY
               value: "{{ .Values.apiKey | default (randAlphaNum 12) }}"
+            - name: SITEACC_API
+              value: "{{ .Values.siteaccApi }}"
             - name: DATABASE_SERVER
               value: "{{ include "gocdb.fullname" . }}-{{ .Values.database.nameOverride }}"
             - name: DATABASE_PORT

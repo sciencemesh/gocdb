@@ -14,6 +14,9 @@ defaultScope: ""
 # The API key used by the GOCDB PI; if left empty, a random one will be generated
 apiKey: ""
 
+# The URL of the site accounts API; should not contain a trailing slash.
+siteaccApi: ""
+
 # Configure the service of the webserver
 service:
   type: ClusterIP

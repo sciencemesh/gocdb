@@ -25,6 +25,7 @@ The following configurations may be set:
 | `url` | The main URL of the GOCDB instance (without the trailing /gocdb). | `""` |
 | `defaultScope` | The default GOCDB scope. | `""` |
 | `apiKey` | The API key for the GOCDB PI. | `(randomly generated)` |
+| `siteaccApi` | The URL of the site accounts API (w/o trailing slash). | `""` |
 | `service.type` | The kubernetes service type to use. | `ClusterIP` |
 | `service.port` | The service port to use. | `8080` |
 | `ingress.enabled` | Whether to create an ingress resource for the GOCDB. | `false` |

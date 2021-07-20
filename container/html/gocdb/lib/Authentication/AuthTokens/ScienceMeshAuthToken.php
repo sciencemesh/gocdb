@@ -11,6 +11,7 @@ class ScienceMeshAuthToken implements IAuthentication {
     private $password;
     private $authorities;
     private $initialUsername;
+    private $token;
 
     public function __construct($username, $password) {
         $this->username = $username;
@@ -55,6 +56,14 @@ class ScienceMeshAuthToken implements IAuthentication {
 
     public function setAuthorities($authorities) {
         $this->authorities = $authorities;
+    }
+
+    public function getToken() {
+        return $this->token;
+    }
+
+    public function setToken($token) {
+        $this->token = token;
     }
 
     public function validate(){

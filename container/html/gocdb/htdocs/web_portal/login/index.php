@@ -46,9 +46,10 @@
 
     <body>
         <div class="container">
-        	<div><h1>Welcome to the ScienceMesh GOCDB login form!</h1></div>
+        	<div><h1>Welcome to the ScienceMesh GOCDB login!</h1></div>
         	<div>
-        		<p>Fill out the form below to authenticate against the ScienceMesh GOCDB.</p>
+        		<p>Log in to your ScienceMesh account using the form below.</p>
+                <p>Don't have an account yet? Click <a href="<?php echo getenv('SITEACC_API') . '/account?path=register'; ?>" target="_blank">here</a> to create one.</p>
         	</div>
         	<div>&nbsp;</div>
         	<div>
@@ -67,6 +68,10 @@
         			</div>
         		</form>
         	</div>
+            <div>&nbsp;</div>
+            <div>
+                Go <a href="../">back</a> to the GOCDB front page.
+            </div>
         </div>
     </body>
 </html>

@@ -4,6 +4,7 @@ image:
 url: "https://sciencemesh-test.uni-muenster.de/testdb"
 defaultScope: "SM"
 apiKey: "test123"
+siteaccApi: "https://sciencemesh-test.uni-muenster.de/api/siteacc"
 
 ingress:
   enabled: true
