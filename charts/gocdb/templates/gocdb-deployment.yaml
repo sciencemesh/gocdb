@@ -24,7 +24,7 @@ spec:
             - name: GOCDB_API_KEY
               value: "{{ .Values.apiKey | default (randAlphaNum 12) }}"
             - name: SITEACC_API
-              value: "{{ .Values.siteaccApi }}"
+              value: "{{ required "The site accounts API must be set" .Values.siteaccApi }}"
             - name: DATABASE_SERVER
               value: "{{ include "gocdb.fullname" . }}-{{ .Values.database.nameOverride }}"
             - name: DATABASE_PORT
