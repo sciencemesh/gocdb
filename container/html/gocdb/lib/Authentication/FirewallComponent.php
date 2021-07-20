@@ -23,6 +23,7 @@ class FirewallComponent implements IFirewallComponent {
      * @see ISecurityContext::getAuthentication()
      */
     // TODO: Do this properly
+    //       use auth_token
     // NOTE: Called by framework as first entry point for any web call for authentication
     public function getAuthentication(){
         $auth = $this->securityContext->getAuthentication();

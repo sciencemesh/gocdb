@@ -8,6 +8,6 @@
 
     $_SESSION["auth_token"] = $token;
 
-    //header("Location: ../");
+    header("Location: ../");
     exit;
 ?>
