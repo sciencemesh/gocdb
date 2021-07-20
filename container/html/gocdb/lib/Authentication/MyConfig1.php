@@ -19,7 +19,6 @@ namespace org\gocdb\security\authentication;
  * user details service.
  *
  * @see IConfigFirewallComponent
- * @author David Meredith
  */
 class MyConfig1 implements IConfigFirewallComponent {
     private $providerList;
@@ -30,14 +29,10 @@ class MyConfig1 implements IConfigFirewallComponent {
        $this->gocdbUserDetailsService = new GOCDBUserDetailsService();
 
        $this->providerList = array();
-       $this->providerList[] = new GOCDBAuthProvider($this->gocdbUserDetailsService);
-       //$this->providerList[] = new SampleAuthProvider();
+       $this->providerList[] = new ScienceMeshAuthProvider($this->gocdbUserDetailsService);
 
        $this->tokenClassList = array();
-       //$this->tokenClassList[] = 'org\gocdb\security\authentication\X509AuthenticationToken';
-       //$this->tokenClassList[] = 'org\gocdb\security\authentication\ShibAuthToken';
-       //$this->tokenClassList[] = 'org\gocdb\security\authentication\SimpleSamlPhpAuthToken';
-       $this->tokenClassList[] = 'org\gocdb\security\authentication\UsernamePasswordAuthenticationToken';
+       $this->tokenClassList[] = 'org\gocdb\security\authentication\ScienceMeshAuthToken';
     }
 
     /**
@@ -59,10 +54,6 @@ class MyConfig1 implements IConfigFirewallComponent {
 
     /**
      * Get the supported auth token class names as strings.
-     * <pre>
-     * [0] = 'org\gocdb\security\authentication\X509AuthenticationToken'
-     * [1] = 'org\gocdb\security\authentication\SimpleSamlPhpAuthToken'
-     * </pre>
      * @see IConfigFirewallComponent::getAuthTokenClassList()
      * @return array
      */

@@ -15,7 +15,6 @@
 namespace org\gocdb\security\authentication;
 /**
  * @see IFirewallComponent
- * @author David Meredith
  */
 class FirewallComponent implements IFirewallComponent {
     private $authManager;
@@ -35,11 +34,12 @@ class FirewallComponent implements IFirewallComponent {
     /**
      * @see ISecurityContext::getAuthentication()
      */
+    // TODO: Do this properly
+    // NOTE: Called by framework as first entry point for any web call for authentication
     public function getAuthentication(){
         $auth = $this->securityContext->getAuthentication();
 
         // Initiate token creation
-        // TODO: Do this properly
 
         // Check session variables first
         if (isset($_SESSION["auth_username"]) && isset($_SESSION["auth_password"])) {
@@ -69,6 +69,7 @@ class FirewallComponent implements IFirewallComponent {
     /**
      * @see ISecurityContext::setAuthentication($auth)
      */
+    // TODO: Do this properly
     public function setAuthentication($auth = null){
         if ($auth) {
             $_SESSION["ext_username"] = $auth->getPrinciple();
@@ -79,6 +80,23 @@ class FirewallComponent implements IFirewallComponent {
         }
 
         return $this->securityContext->setAuthentication($auth);
+    }
+
+    // TODO: Do this properly
+    private function authenticateUsernamePassword($username, $password) {
+        $auth = new UsernamePasswordAuthenticationToken($username, $password);
+
+        // TODO: Totally advanced security
+        if ($auth->getPrinciple() == $auth->getCredentials()) {
+            try {
+                $auth = $this->authenticate($auth);
+            } catch (\Exception $e) {
+            }
+        } else {
+            $auth = null;
+        }
+
+        return $auth;
     }
 
     /**
@@ -104,21 +122,5 @@ class FirewallComponent implements IFirewallComponent {
             }
         }
         return false;
-    }
-
-    private function authenticateUsernamePassword($username, $password) {
-        $auth = new UsernamePasswordAuthenticationToken($username, $password);
-
-        // TODO: Totally advanced security
-        if ($auth->getPrinciple() == $auth->getCredentials()) {
-            try {
-                $auth = $this->authenticate($auth);
-            } catch (\Exception $e) {
-            }
-        } else {
-            $auth = null;
-        }
-
-        return $auth;
     }
 }
