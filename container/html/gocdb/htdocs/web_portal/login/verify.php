@@ -86,7 +86,7 @@
 					var resp = JSON.parse(this.responseText);
 
         			if (this.status == 200) {
-						setState(STATE_SUCCESS, "Your token is valid!");
+						setState(STATE_SUCCESS, "Your token is valid! New token: " + resp.data, "form", null, true);
         			} else {
         				setState(STATE_ERROR, "Your token is invalid:<br><em>" + resp.error + "</em>", "form", null, true);
         			}
