@@ -60,17 +60,10 @@
 			}
 		}
 
-        function verifyForm(formData, requirePassword = true) {
-        	if (formData.get("email") == "") {
-        		setState(STATE_ERROR, "Please enter your email address.", "form", "email", true);
+        function verifyForm(formData) {
+        	if (formData.get("token") == "") {
+        		setState(STATE_ERROR, "Please enter your token.", "form", "token", true);
         		return false;
-        	}
-
-        	if (requirePassword) {
-        		if (formData.get("password") == "") {
-        			setState(STATE_ERROR, "Please enter your password.", "form", "password", true);
-        			return false;
-        		}
         	}
 
         	return true;
@@ -82,10 +75,10 @@
         		return;
         	}
 
-        	setState(STATE_STATUS, "Logging in... this should only take a moment.", "form", null, false);
+        	setState(STATE_STATUS, "Verifying token... this should only take a moment.", "form", null, false);
 
         	var xhr = new XMLHttpRequest();
-            xhr.open("POST", "<?php echo getenv('SITEACC_API') . '/login?scope=gocdb'; ?>");
+            xhr.open("GET", "<?php echo getenv('SITEACC_API') . '/verify-user-token?token='; ?>" + formData.get("token"));
             xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
 
         	xhr.onreadystatechange = function() {
@@ -93,23 +86,14 @@
 					var resp = JSON.parse(this.responseText);
 
         			if (this.status == 200) {
-						//setState(STATE_SUCCESS, "Your login was successful! Redirecting...");
-						//window.location.replace("login.php?token=" + encodeURIComponent(resp.data) + "&email=" + encodeURIComponent(formData.get("email")));
-						setState(STATE_SUCCESS, "Your login was successful! " + resp.data);
+						setState(STATE_SUCCESS, "Your token is valid!");
         			} else {
-        				setState(STATE_ERROR, "An error occurred while trying to login your account:<br><em>" + resp.error + "</em>", "form", null, true);
+        				setState(STATE_ERROR, "Your token is invalid:<br><em>" + resp.error + "</em>", "form", null, true);
         			}
                 }
         	}
 
-        	var postData = {
-                "email": formData.get("email"),
-        		"password": {
-        			"value": formData.get("password")
-        		}
-            };
-
-            xhr.send(JSON.stringify(postData));
+            xhr.send();
         }
 	</script>
 
@@ -178,25 +162,17 @@
 <body>
 
 <div class="container">
-	<div><h1>Welcome to the ScienceMesh GOCDB login!</h1></div>
-	<div>
-		<p>Log in to your ScienceMesh account using the form below.</p>
-		<p>Don't have an account yet? Click <a href="<?php echo getenv('SITEACC_API') . '/account?path=register'; ?>" target="_blank">here</a> to create one.</p>
-	</div>
-	<div>&nbsp;</div>
 	<div>
 		<form id="form" method="POST" class="box container-inline" style="width: 100%;">
-			<div style="grid-row: 1;"><label for="email">Email address: <span class="mandatory">*</span></label></div>
-			<div style="grid-row: 2;"><input type="text" id="email" name="email" placeholder="me@example.com"/></div>
-			<div style="grid-row: 1;"><label for="password">Password: <span class="mandatory">*</span></label></div>
-			<div style="grid-row: 2;"><input type="password" id="password" name="password"/></div>
+			<div style="grid-row: 1;"><label for="token">Token: <span class="mandatory">*</span></label></div>
+			<div style="grid-row: 2; grid-column: 1 / span 2;"><input type="text" id="token" name="token"/></div>
 
 			<div style="grid-row: 3; align-self: center;">
 				Fields marked with <span class="mandatory">*</span> are mandatory.
 			</div>
 			<div style="grid-row: 3; grid-column: 2; text-align: right;">
 				<button type="reset">Reset</button>
-				<button type="button" style="font-weight: bold;" onClick="handleAction();">Login</button>
+				<button type="button" style="font-weight: bold;" onClick="handleAction();">Verify</button>
 			</div>
 		</form>
 	</div>
