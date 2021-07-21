@@ -74,8 +74,10 @@ class ScienceMeshAuthToken implements IAuthentication {
        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
        curl_setopt($ch, CURLOPT_HEADER, 0);
        $data = curl_exec($ch);
+       $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
        curl_close($ch);
-       file_put_contents('php://stderr', print_r($data, TRUE));
+       file_put_contents('php://stderr', print_r($data . "\n", TRUE));
+       file_put_contents('php://stderr', print_r($_COOKIE . "\n", TRUE));
 
        // TODO: Verify token, update value
     }
