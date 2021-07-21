@@ -69,7 +69,7 @@ class ScienceMeshAuthToken implements IAuthentication {
            throw new AuthenticationException('Invalid state, principle does not equal initial username');
        }
 
-       // TODO: Verify token
+       // TODO: Verify token, update value
     }
 }
 

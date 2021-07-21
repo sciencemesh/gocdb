@@ -22,37 +22,38 @@ class FirewallComponent implements IFirewallComponent {
     /**
      * @see ISecurityContext::getAuthentication()
      */
-    // TODO: Do this properly
-    //       use sm_auth_token & sm_auth_email
-    // NOTE: Called by framework as first entry point for any web call for authentication
     public function getAuthentication(){
         $auth = $this->securityContext->getAuthentication();
-        echo "<script>console.log('HENLO THER!');</script>";
 
-        // NOTE: If auth != null -> stored in session; reuse but validate
-
-        // Initiate token creation
-        // TODO: Validate token
-
-        // Check session variables first
-        if (isset($_SESSION["auth_username"]) && isset($_SESSION["auth_password"])) {
+        // Check session variables first; this means that the user did a successful login attempt
+        if (isset($_SESSION["sm_auth_token"]) && isset($_SESSION["sm_auth_email"])) {
             $this->setAuthentication(null);
 
-            $username = $_SESSION["auth_username"];
-            unset($_SESSION["auth_username"]);
-            $password = $_SESSION["auth_password"];
-            unset($_SESSION["auth_password"]);
+            $token = $_SESSION["sm_auth_token"];
+            unset($_SESSION["sm_auth_token"]);
+            $email = $_SESSION["sm_auth_email"];
+            unset($_SESSION["sm_auth_email"]);
 
-            $auth = $this->authenticateUsernamePassword($username, $password);
-
-            if ($auth) {
+            $auth = $this->authenticateUserToken($token, $email);
+            $this->setAuthentication($auth);
+        } else if ($auth == null) {
+            if (isset($_SESSION["sm_ext_token"]) && isset($_SESSION["sm_ext_email"])) {
+                // Token was already authenticated
+                $auth = new ScienceMeshAuthToken($_SESSION["sm_ext_email"], $_SESSION["sm_ext_token"]);
                 $this->setAuthentication($auth);
             }
-        } else if ($auth == null) {
-            if (isset($_SESSION["ext_username"]) && isset($_SESSION["ext_password"])) {
-                // Token was already authenticated
-                $auth = new UsernamePasswordAuthenticationToken($_SESSION["ext_username"], $_SESSION["ext_password"]);
-                $this->setAuthentication($auth);
+        }
+
+        if ($auth != null) {
+            try {
+                $auth->validate();
+
+                // Validation causes a new token, so update the stored one
+                $this->storeAuthenticationToken($auth);
+            } catch (\Exception $e) {
+                // The token is invalid, so unset the authentication
+                $auth = null;
+                $this->setAuthentication(null);
             }
         }
 
@@ -62,34 +63,29 @@ class FirewallComponent implements IFirewallComponent {
     /**
      * @see ISecurityContext::setAuthentication($auth)
      */
-    // TODO: Do this properly
     public function setAuthentication($auth = null){
-        if ($auth) {
-            $_SESSION["ext_username"] = $auth->getPrinciple();
-            $_SESSION["ext_password"] = $auth->getCredentials();
-        } else {
-            unset($_SESSION["ext_username"]);
-            unset($_SESSION["ext_password"]);
-        }
-
+        $this->storeAuthenticationToken($auth);
         return $this->securityContext->setAuthentication($auth);
     }
 
-    // TODO: Do this properly
-    private function authenticateUsernamePassword($username, $password) {
-        $auth = new UsernamePasswordAuthenticationToken($username, $password);
-
-        // TODO: Totally advanced security
-        if ($auth->getPrinciple() == $auth->getCredentials()) {
-            try {
-                $auth = $this->authenticate($auth);
-            } catch (\Exception $e) {
-            }
-        } else {
-            $auth = null;
+    private function authenticateUserToken($token, $email) {
+        $auth = new ScienceMeshAuthToken($email, $token);
+        try {
+            $auth = $this->authenticate($auth);
+        } catch (\Exception $e) {
+            // Errors here are uncritical, so keep the auth token
         }
-
         return $auth;
+    }
+
+    private function storeAuthenticationToken($auth) {
+        if ($auth) {
+            $_SESSION["sm_ext_token"] = $auth->getToken();
+            $_SESSION["sm_ext_email"] = $auth->getPrinciple();
+        } else {
+            unset($_SESSION["sm_ext_token"]);
+            unset($_SESSION["sm_ext_email"]);
+        }
     }
 
     /**
