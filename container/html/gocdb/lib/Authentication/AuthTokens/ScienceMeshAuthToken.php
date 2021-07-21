@@ -27,7 +27,7 @@ class ScienceMeshAuthToken implements IAuthentication {
     }
 
     public function getCredentials() {
-      return $this->token;
+      return "";
     }
 
     public function getDetails() {
@@ -46,7 +46,6 @@ class ScienceMeshAuthToken implements IAuthentication {
     }
 
     public function eraseCredentials() {
-        $this->token = null;
     }
 
     public function getAuthorities(){
@@ -57,10 +56,20 @@ class ScienceMeshAuthToken implements IAuthentication {
         $this->authorities = $authorities;
     }
 
+    public function getToken() {
+        return $this->token;
+    }
+
+    public function setToken($token) {
+        $this->token = $token;
+    }
+
     public function validate(){
        if($this->getPrinciple() != $this->initialUsername){
            throw new AuthenticationException('Invalid state, principle does not equal initial username');
        }
+
+       // TODO: Verify token
     }
 }
 

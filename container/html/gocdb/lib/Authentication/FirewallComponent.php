@@ -27,8 +27,12 @@ class FirewallComponent implements IFirewallComponent {
     // NOTE: Called by framework as first entry point for any web call for authentication
     public function getAuthentication(){
         $auth = $this->securityContext->getAuthentication();
+        echo "<script>console.log('HENLO THER!');</script>";
+
+        // NOTE: If auth != null -> stored in session; reuse but validate
 
         // Initiate token creation
+        // TODO: Validate token
 
         // Check session variables first
         if (isset($_SESSION["auth_username"]) && isset($_SESSION["auth_password"])) {

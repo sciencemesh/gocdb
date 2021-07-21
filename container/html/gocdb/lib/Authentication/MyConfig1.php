@@ -36,7 +36,6 @@ class MyConfig1 implements IConfigFirewallComponent {
     }
 
     /**
-     * Get an array containing <codeGOCDBAuthProvider</code> as the first element.
      * @see IConfigFirewallComponent::getAuthProviders()
      * @return
      */
@@ -53,7 +52,6 @@ class MyConfig1 implements IConfigFirewallComponent {
     }
 
     /**
-     * Get the supported auth token class names as strings.
      * @see IConfigFirewallComponent::getAuthTokenClassList()
      * @return array
      */
