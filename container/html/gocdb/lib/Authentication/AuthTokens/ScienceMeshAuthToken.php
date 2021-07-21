@@ -8,15 +8,14 @@ require_once __DIR__.'/../IAuthentication.php';
 class ScienceMeshAuthToken implements IAuthentication {
     private $userDetails;
     private $username;
-    private $password;
+    private $token;
     private $authorities;
     private $initialUsername;
-    private $token;
 
-    public function __construct($username, $password) {
+    public function __construct($username, $token) {
         $this->username = $username;
         $this->initialUsername = $username;
-        $this->password = $password;
+        $this->token = $token;
     }
 
     public static function isStateless() {
@@ -28,7 +27,7 @@ class ScienceMeshAuthToken implements IAuthentication {
     }
 
     public function getCredentials() {
-      return $this->password;
+      return $this->token;
     }
 
     public function getDetails() {
@@ -47,7 +46,7 @@ class ScienceMeshAuthToken implements IAuthentication {
     }
 
     public function eraseCredentials() {
-        $this->password = null;
+        $this->token = null;
     }
 
     public function getAuthorities(){
@@ -56,14 +55,6 @@ class ScienceMeshAuthToken implements IAuthentication {
 
     public function setAuthorities($authorities) {
         $this->authorities = $authorities;
-    }
-
-    public function getToken() {
-        return $this->token;
-    }
-
-    public function setToken($token) {
-        $this->token = token;
     }
 
     public function validate(){
