@@ -69,6 +69,10 @@ class ScienceMeshAuthToken implements IAuthentication {
            throw new AuthenticationException('Invalid state, principle does not equal initial username');
        }
 
+       $url = getenv('SITEACC_API') . '/verify-user-token?token=' . urlencode($this->token);
+       $answer = file_get_contents($url);
+       error_log($answer);
+
        // TODO: Verify token, update value
     }
 }
