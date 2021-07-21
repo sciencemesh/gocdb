@@ -70,8 +70,12 @@ class ScienceMeshAuthToken implements IAuthentication {
        }
 
        $url = getenv('SITEACC_API') . '/verify-user-token?token=' . urlencode($this->token);
-       $answer = file_get_contents($url);
-       error_log($answer);
+       $ch = curl_init($url);
+       curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+       curl_setopt($ch, CURLOPT_HEADER, 0);
+       $data = curl_exec($ch);
+       curl_close($ch);
+       file_put_contents('php://stderr', print_r($data, TRUE));
 
        // TODO: Verify token, update value
     }
