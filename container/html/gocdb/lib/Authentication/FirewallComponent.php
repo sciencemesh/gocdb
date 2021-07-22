@@ -102,8 +102,7 @@ class FirewallComponent implements IFirewallComponent {
     public function supports(IAuthentication $auth) {
         $providers = $this->config->getAuthProviders();
         if (empty($providers)) {
-            throw new \LogicException("Configuration Error - "
-            . "No AuthenticationProviders are configured");
+            throw new \LogicException("Configuration Error - No AuthenticationProviders are configured");
         }
         foreach ($providers as $provider) {
             if ($provider->supports($auth)) {
