@@ -66,7 +66,7 @@ class ScienceMeshAuthToken implements IAuthentication {
 
     public function validate(){
         if($this->getPrinciple() != $this->initialUsername){
-            throw new AuthenticationException('Invalid state, principle does not equal initial username');
+            throw new \Exception('Invalid state, principle does not equal initial username');
         }
 
         // Query the site accounts service to verify the current user token
@@ -80,12 +80,10 @@ class ScienceMeshAuthToken implements IAuthentication {
 
         $resp = json_decode($data, TRUE);
         if (intval($code) == 200) {
-            // Update the current token
+            // Update the current token with the new one that is provided in the response
             $this->setToken($resp["data"]);
-            file_put_contents('php://stderr', print_r($this->token . "\n", TRUE));
         } else {
-            file_put_contents('php://stderr', print_r('The stored user token is invalid: ' . $resp["error"] . "\n", TRUE));
-            throw new \AuthenticationException('The stored user token is invalid: ' . $resp["error"]);
+            throw new \Exception('The stored user token is invalid: ' . $resp["error"]);
         }
     }
 }
