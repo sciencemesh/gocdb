@@ -1,6 +1,7 @@
 <?php
 namespace org\gocdb\security\authentication;
 require_once __DIR__.'/../IAuthentication.php';
+require_once __DIR__.'/../Exceptions/AuthenticationException.php';
 
 /**
 * ScienceMesh specific authentication token.
@@ -66,7 +67,7 @@ class ScienceMeshAuthToken implements IAuthentication {
 
     public function validate(){
         if($this->getPrinciple() != $this->initialUsername){
-            throw new \Exception('Invalid state, principle does not equal initial username');
+            throw new AuthenticationException('Invalid state, principle does not equal initial username');
         }
 
         // Query the site accounts service to verify the current user token
@@ -83,7 +84,7 @@ class ScienceMeshAuthToken implements IAuthentication {
             // Update the current token with the new one that is provided in the response
             $this->setToken($resp["data"]);
         } else {
-            throw new \Exception('The stored user token is invalid: ' . $resp["error"]);
+            throw new AuthenticationException('The stored user token is invalid: ' . $resp["error"]);
         }
     }
 }
