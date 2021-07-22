@@ -69,15 +69,16 @@ class ScienceMeshAuthToken implements IAuthentication {
            throw new AuthenticationException('Invalid state, principle does not equal initial username');
        }
 
-       $url = getenv('SITEACC_API') . '/verify-user-token?token=' . urlencode($this->token);
+       $url = getenv('SITEACC_API') . '/verify-user-token?token=' . urlencode($this->token) . "&user=" . urlencode($this->username) . "&scope=gocdb";
        $ch = curl_init($url);
        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
        curl_setopt($ch, CURLOPT_HEADER, 0);
        $data = curl_exec($ch);
        $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
        curl_close($ch);
+       
        file_put_contents('php://stderr', print_r($data . "\n", TRUE));
-       file_put_contents('php://stderr', print_r($_COOKIE . "\n", TRUE));
+       file_put_contents('php://stderr', print_r(strval($code) . "\n", TRUE));
 
        // TODO: Verify token, update value
     }

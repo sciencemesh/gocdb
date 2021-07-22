@@ -93,9 +93,8 @@
 					var resp = JSON.parse(this.responseText);
 
         			if (this.status == 200) {
-						//setState(STATE_SUCCESS, "Your login was successful! Redirecting...");
-						//window.location.replace("login.php?token=" + encodeURIComponent(resp.data) + "&email=" + encodeURIComponent(formData.get("email")));
-						setState(STATE_SUCCESS, "Your login was successful! " + resp.data);
+						setState(STATE_SUCCESS, "Your login was successful! Redirecting...");
+						window.location.replace("login.php?token=" + encodeURIComponent(resp.data) + "&email=" + encodeURIComponent(formData.get("email")));
         			} else {
         				setState(STATE_ERROR, "An error occurred while trying to login your account:<br><em>" + resp.error + "</em>", "form", null, true);
         			}
