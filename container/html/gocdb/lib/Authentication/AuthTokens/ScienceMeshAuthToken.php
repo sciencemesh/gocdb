@@ -84,6 +84,7 @@ class ScienceMeshAuthToken implements IAuthentication {
             // Update the current token with the new one that is provided in the response
             $this->setToken($resp["data"]);
         } else {
+            fwrite(STDERR, 'The stored user token is invalid: ' . $resp["error"] . PHP_EOL);
             throw new AuthenticationException('The stored user token is invalid: ' . $resp["error"]);
         }
     }
