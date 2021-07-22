@@ -23,7 +23,13 @@ class FirewallComponent implements IFirewallComponent {
      * @see ISecurityContext::getAuthentication()
      */
     public function getAuthentication(){
-        $auth = $this->securityContext->getAuthentication();
+        try {
+            $auth = $this->securityContext->getAuthentication();
+        } catch (\Exception $e) {
+            // The stored token is invalid, so unset the authentication
+            $auth = null;
+            $this->setAuthentication(null);
+        }
 
         // Check session variables first; this means that the user did a successful login attempt
         if (isset($_SESSION["sm_auth_token"]) && isset($_SESSION["sm_auth_email"])) {
