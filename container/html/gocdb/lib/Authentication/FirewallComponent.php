@@ -62,7 +62,7 @@ class FirewallComponent implements IFirewallComponent {
                 $this->setAuthentication(null);
             }
         } else {
-            // Redirect non-logged in users to the login page
+            // Redirect non-logged in users to the login page; this also prevents any users w/o an account to access the GOCDB
             header("Location: ./login/");
         }
 

@@ -179,8 +179,8 @@
 <div class="container">
 	<div><h1>Welcome to the ScienceMesh GOCDB login!</h1></div>
 	<div>
-		<p>Log in to your ScienceMesh account using the form below.</p>
-		<p>Don't have an account yet? Click <a href="<?php echo getenv('SITEACC_API') . '/account?path=register'; ?>" target="_blank">here</a> to create one.</p>
+		<p>To access the GOCDB, log in to your ScienceMesh account using the form below.</p>
+		<p>Don't have an account yet? Click <a href="<?php echo getenv('SITEACC_API') . '/account?path=register'; ?>" target="_blank">here</a> to create one. Please note that your account needs to be verified by a ScienceMesh administrator first before you can actually access the GOCDB.</p>
 	</div>
 	<div>&nbsp;</div>
 	<div>
@@ -195,12 +195,9 @@
 			</div>
 			<div style="grid-row: 3; grid-column: 2; text-align: right;">
 				<button type="reset">Reset</button>
-				<button type="button" style="font-weight: bold;" onClick="handleAction();">Login</button>
+				<button type="submit" style="font-weight: bold;" onClick="handleAction();">Login</button>
 			</div>
 		</form>
-	</div>
-	<div>
-		Go <a href="../">back</a> to the GOCDB front page.
 	</div>
 
 	<div id="status" class="box status hidden"></div>
