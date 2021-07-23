@@ -61,6 +61,9 @@ class FirewallComponent implements IFirewallComponent {
                 $auth = null;
                 $this->setAuthentication(null);
             }
+        } else {
+            // Redirect non-logged in users to the login page
+            header("Location: ./login/");
         }
 
         return $auth;
