@@ -61,7 +61,7 @@
 		}
 
         function verifyForm(formData, requirePassword = true) {
-        	if (formData.get("email") == "") {
+        	if (formData.get("email").trim() == "") {
         		setState(STATE_ERROR, "Please enter your email address.", "form", "email", true);
         		return false;
         	}
@@ -102,7 +102,7 @@
         	}
 
         	var postData = {
-                "email": formData.get("email"),
+                "email": formData.get("email").trim(),
         		"password": {
         			"value": formData.get("password")
         		}
