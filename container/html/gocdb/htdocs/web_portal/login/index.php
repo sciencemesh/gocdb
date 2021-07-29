@@ -88,17 +88,15 @@
             xhr.open("POST", "<?php echo getenv('SITEACC_API') . '/login?scope=gocdb'; ?>");
             xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
 
-        	xhr.onreadystatechange = function() {
-        		if (this.readyState === XMLHttpRequest.DONE) {
-					var resp = JSON.parse(this.responseText);
+        	xhr.onload = function() {
+				var resp = JSON.parse(this.responseText);
 
-        			if (this.status == 200) {
-						setState(STATE_SUCCESS, "Your login was successful! Redirecting...");
-						window.location.replace("login.php?token=" + encodeURIComponent(resp.data) + "&email=" + encodeURIComponent(formData.get("email")));
-        			} else {
-        				setState(STATE_ERROR, "An error occurred while trying to login your account:<br><em>" + resp.error + "</em>", "form", null, true);
-        			}
-                }
+    			if (this.status == 200) {
+					setState(STATE_SUCCESS, "Your login was successful! Redirecting...");
+					window.location.replace("login.php?token=" + encodeURIComponent(resp.data) + "&email=" + encodeURIComponent(formData.get("email")));
+    			} else {
+    				setState(STATE_ERROR, "An error occurred while trying to login your account:<br><em>" + resp.error + "</em>", "form", null, true);
+    			}
         	}
 
         	var postData = {
