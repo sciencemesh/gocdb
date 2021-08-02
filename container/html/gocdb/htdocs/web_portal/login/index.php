@@ -60,6 +60,17 @@
 			}
 		}
 
+		String.prototype.hashCode = async function() {
+			if (this.length === 0) {
+                return "";
+			}
+
+			var msgBuffer = new TextEncoder().encode(this);
+			var hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
+			var hashArray = Array.from(new Uint8Array(hashBuffer));
+			return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+		};
+
         function verifyForm(formData, requirePassword = true) {
         	if (formData.get("email").trim() == "") {
         		setState(STATE_ERROR, "Please enter your email address.", "form", "email", true);
@@ -99,14 +110,17 @@
     			}
         	}
 
-        	var postData = {
-                "email": formData.get("email").trim(),
-        		"password": {
-        			"value": formData.get("password")
-        		}
-            };
+			var pwd = formData.get("password");
+			pwd.hashCode().then(function(pwdHash) {
+				var postData = {
+			        "email": formData.get("email").trim(),
+					"password": {
+						"value": pwdHash
+					}
+			    };
 
-            xhr.send(JSON.stringify(postData));
+			    xhr.send(JSON.stringify(postData));
+			});
         }
 	</script>
 
