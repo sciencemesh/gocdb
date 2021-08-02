@@ -68,7 +68,7 @@
 			var msgBuffer = new TextEncoder().encode(this);
 			var hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
 			var hashArray = Array.from(new Uint8Array(hashBuffer));
-			return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+			return hashArray.map(b => b.toString(16).padStart(2, '0')).join('').toLowerCase();
 		};
 
         function verifyForm(formData, requirePassword = true) {
