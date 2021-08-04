@@ -20,12 +20,13 @@ For more details about GOCDB, visit the official documentation [here](https://wi
 ## Changes made
 The following changes were made to the original GOCDB code:
 - Set up `lib/Doctrine/bootstrap_doctrine.php`, allowing configuration via environment variables
-- Add simple username/password authentication
-- Allow login via a simple form (located under `/gocdb/login/`)
+- Add ScienceMesh username/password authentication based on site accounts (see `lib/Authentication/`)
+    - Env. variable `SITEACC_API` used to specify site accounts service URL
+- Allow login via a simple form (located under `/gocdb/login/`; see `htdocs/web_portal/login/`)
 - Fix bug in `lib/Gocdb_Services/Role.php` not updating the Role record ID: After calling `em->persist`, `em->flush` has to be called to set generated values properly
     - Also apply the same fix to a bunch of other files, just in case...
-- The GOCDBAuthProvider used a non-existing class; fix by passing the required reference in the constructor
-- PI: Protect all methods via an API key
+- The `GOCDBAuthProvider` used a non-existing class; fix by passing the required reference in the constructor
+- PI: Protect all methods via an API key (env. variable `GOCDB_API_KEY`)
 
 ## Notes
 To make setting up and working with the GOCDB easy, user authentication was removed. This renders some features unusable, like applying user roles.
