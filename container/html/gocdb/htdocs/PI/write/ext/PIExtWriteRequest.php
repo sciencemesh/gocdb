@@ -13,11 +13,6 @@ class PIExtWriteRequest {
     private $returnCode = 500;
     private $returnObject = null;
 
-    private function exceptionWithResponseCode($code, $message) {
-        $this->returnCode = $code;
-        throw new \Exception($message);
-    }
-
     public function __construct($userServ) {
         $this->userService = $userServ;
     }
@@ -49,20 +44,9 @@ class PIExtWriteRequest {
         return array("httpResponseCode" => $this->returnCode, "returnObject" => $this->returnObject);
     }
 
-    private function authAPIKey($request) {
-        $gocdb_api_key = getenv("GOCDB_API_KEY");
-        if ($gocdb_api_key == false) {
-            $this->exceptionWithResponseCode(500, "no GOCDB API key was set in the system");
-        }
-
-        if (array_key_exists("APIKey", $request)) {
-            $apiKey = $request["APIKey"];
-            if (strcmp($apiKey, $gocdb_api_key) != 0) {
-                $this->exceptionWithResponseCode(401, "no valid API key was provided");
-            }
-        } else {
-            $this->exceptionWithResponseCode(401, "no API key was provided");
-        }
+    private function exceptionWithResponseCode($code, $message) {
+        $this->returnCode = $code;
+        throw new \Exception($message);
     }
 
     private function processRequestData($method, $requestUrl, $requestContents) {
@@ -106,6 +90,22 @@ class PIExtWriteRequest {
 
         if (!in_array($request["EntityType"], $this->supportedEntityTypes)) {
             $this->exceptionWithResponseCode(400, "unsupported entity type");
+        }
+    }
+    
+    private function authAPIKey($request) {
+        $gocdb_api_key = getenv("GOCDB_API_KEY");
+        if ($gocdb_api_key == false) {
+            $this->exceptionWithResponseCode(500, "no GOCDB API key was set in the system");
+        }
+
+        if (array_key_exists("APIKey", $request)) {
+            $apiKey = $request["APIKey"];
+            if (strcmp($apiKey, $gocdb_api_key) != 0) {
+                $this->exceptionWithResponseCode(401, "no valid API key was provided");
+            }
+        } else {
+            $this->exceptionWithResponseCode(401, "no API key was provided");
         }
     }
 }
