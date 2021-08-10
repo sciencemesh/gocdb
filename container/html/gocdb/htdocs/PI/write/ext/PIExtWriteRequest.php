@@ -1,6 +1,8 @@
 <?php
 namespace org\gocdb\services;
 
+require_once __DIR__ . '/UserRequest.php';
+
 date_default_timezone_set("UTC");
 
 class PIExtWriteRequest {
@@ -31,9 +33,10 @@ class PIExtWriteRequest {
             // - the entity type is known
             $this->verifyRequestData($request);
 
-            // TODO: Process request
-            $this->returnObject = $request;
+            // Handle the actual request; this will throw an exception in case of an error, so no exception means that everything went fine
+            $obj = $this->handleRequest($request["EntityType"], $request["Method"], $request["Data"]);
             $this->returnCode = 200;
+            $this->returnObject = $obj;
         } catch (\Exception $e) {
             $message = $e->getMessage();
 
@@ -69,7 +72,7 @@ class PIExtWriteRequest {
                 $request["APIKey"] = $data["APIKey"];
             }
 
-            if (array_key_exists("Payload", "data")) {
+            if (array_key_exists("Payload", $data)) {
                 $request["Data"] = $data["Payload"];
             }
         } else {
@@ -92,7 +95,7 @@ class PIExtWriteRequest {
             $this->exceptionWithResponseCode(400, "unsupported entity type");
         }
     }
-    
+
     private function authAPIKey($request) {
         $gocdb_api_key = getenv("GOCDB_API_KEY");
         if ($gocdb_api_key == false) {
@@ -107,5 +110,38 @@ class PIExtWriteRequest {
         } else {
             $this->exceptionWithResponseCode(401, "no API key was provided");
         }
+    }
+
+    private function handleRequest($entityType, $method, $data) {
+        try {
+            switch ($entityType) {
+            case "user":
+                return $this->handleUserRequest($method, $data);
+            }
+        } catch (\Exception $e) {
+            $this->returnCode = 400;
+            throw $e;
+        }
+
+        return null;
+    }
+
+    private function handleUserRequest($method, $data) {
+        $userReq = new UserRequest($this->userService);
+        $reply = null;
+
+        switch ($method) {
+        case "POST":
+        case "PUT":
+            // POST and PUT are handled by the same function
+            $reply = $userReq->createOrUpdateUser($data);
+            break;
+
+        case "DELETE":
+            $reply = $userReq->deleteUser($data);
+            break;
+        }
+
+        return $reply;
     }
 }

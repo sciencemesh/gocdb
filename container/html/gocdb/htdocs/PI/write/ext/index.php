@@ -1,5 +1,4 @@
 <?php
-
 namespace org\gocdb\services;
 
 require_once __DIR__ . '/../../../../lib/Gocdb_Services/Factory.php';
