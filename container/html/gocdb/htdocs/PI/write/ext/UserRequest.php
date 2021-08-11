@@ -10,6 +10,15 @@ namespace org\gocdb\services;
  *  - PhoneNumber
 **/
 
+const FIELD_EMAIL = "Email";
+const FIELD_TITLE = "Title";
+const FIELD_FIRSTNAME = "FirstName";
+const FIELD_LASTNAME = "LastName";
+const FIELD_PHONENUMBER = "PhoneNumber";
+
+const REPLY_USERID = "UserId";
+const REPLY_STATUS = "Status";
+
 class UserRequest {
     private $userService;
 
@@ -18,27 +27,30 @@ class UserRequest {
     }
 
     public function createOrUpdateUser($data) {
-        $values = $this->getDataFields($data);
+        $values = $this->getGOCDBDataFields($data);
+        $status = "Unknown";
 
         $user = $this->userService->getUserByPrinciple($values["CERTIFICATE_DN"]);
         if ($user != null) {
             // User already exists, so update it
             $user = $this->userService->editUser($user, $values, $user);
+            $status = "Modified";
         } else {
             // User doesn't exist, so create one
             $user = $this->userService->register($values);
+            $status = "Created";
         }
 
         $reply = null;
         if ($user != null) {
-            $reply["UserId"] = $user->getCertificateDn();
+            $reply[REPLY_USERID] = $user->getCertificateDn();
+            $reply[REPLY_STATUS] = $status;
         }
-
         return $reply;
     }
 
     public function deleteUser($data) {
-        $values = $this->getDataFields($data, false);
+        $values = $this->getGOCDBDataFields($data, false);
 
         $user = $this->userService->getUserByPrinciple($values["CERTIFICATE_DN"]);
         if ($user == null) {
@@ -46,40 +58,39 @@ class UserRequest {
         }
 
         $this->userService->deleteUser($user, $user);
-        return null;
+
+        $reply[REPLY_USERID] = $user->getCertificateDn();
+        $reply[REPLY_STATUS] = "Deleted";
+        return $reply;
     }
 
-    private function verifyData($data) {
+    private function getGOCDBDataFields($data, $verifyAll = true) {
         // The data must at least contain an email address
-        if (!array_key_exists("Email", $data) || $data["Email"] == "") {
+        if (!array_key_exists(FIELD_EMAIL, $data) || $data[FIELD_EMAIL] == "") {
             throw new \Exception("no email address provided");
         }
-    }
-
-    private function getDataFields($data, $verifyAll = true) {
-        $this->verifyData($data);
 
         if ($verifyAll) {
-            if ($data["FirstName"] == "") {
+            if ($data[FIELD_FIRSTNAME] == "") {
                 throw new \Exception("no first name provided");
             }
 
-            if ($data["LastName"] == "") {
+            if ($data[FIELD_LASTNAME] == "") {
                 throw new \Exception("no last name provided");
             }
         }
 
-        $title = $data["Title"];
+        $title = $data[FIELD_TITLE];
         if ($title == "") {
             $title = "Mr";
         }
 
         $values["TITLE"] = $title;
-        $values["FORENAME"] = $data["FirstName"];
-        $values["SURNAME"] = $data["LastName"];
-        $values["EMAIL"] = $data["Email"];
-        $values["TELEPHONE"] = $data["PhoneNumber"];
-        $values["CERTIFICATE_DN"] = $data["Email"];
+        $values["FORENAME"] = $data[FIELD_FIRSTNAME];
+        $values["SURNAME"] = $data[FIELD_LASTNAME];
+        $values["EMAIL"] = $data[FIELD_EMAIL];
+        $values["TELEPHONE"] = $data[FIELD_PHONENUMBER];
+        $values["CERTIFICATE_DN"] = $data[FIELD_EMAIL];
         return $values;
     }
 }

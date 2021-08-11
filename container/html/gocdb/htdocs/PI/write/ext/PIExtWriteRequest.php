@@ -5,10 +5,29 @@ require_once __DIR__ . '/UserRequest.php';
 
 date_default_timezone_set("UTC");
 
+/**
+ * The basic JSON content of a POST/PUT request looks as follows:
+ *  - APIKey
+ *  - Operation
+ *  - Data
+**/
+
+const KEY_OPERATION = "Operation";
+const KEY_ENTITY_TYPE = "EntityType";
+const KEY_APIKEY = "APIKey";
+const KEY_APIVERSION = "APIVersion";
+const KEY_METHOD = "Method";
+const KEY_DATA = "Data";
+
+const ENTITYTYPE_USER = "user";
+
+const OPERATION_CREATEORUPDATE = "CreateOrUpdate";
+const OPERATION_DELETE = "Delete";
+
 class PIExtWriteRequest {
     private $supportedAPIVersions = array("v1");
-    private $supportedRequestMethods = array("POST", "PUT", "DELETE");
-    private $supportedEntityTypes = array("user");
+    private $supportedRequestMethods = array("POST", "PUT");
+    private $supportedEntityTypes = array(ENTITYTYPE_USER);
 
     private $userService;
 
@@ -34,7 +53,7 @@ class PIExtWriteRequest {
             $this->verifyRequestData($request);
 
             // Handle the actual request; this will throw an exception in case of an error, so no exception means that everything went fine
-            $obj = $this->handleRequest($request["EntityType"], $request["Method"], $request["Data"]);
+            $obj = $this->handleRequest($request[KEY_ENTITY_TYPE], $request[KEY_OPERATION], $request[KEY_DATA]);
             $this->returnCode = 200;
             $this->returnObject = $obj;
         } catch (\Exception $e) {
@@ -53,7 +72,7 @@ class PIExtWriteRequest {
     }
 
     private function processRequestData($method, $requestUrl, $requestContents) {
-        $request["Method"] = $method;
+        $request[KEY_METHOD] = $method;
 
         $requestArray = explode("/", $requestUrl);
         $requestArray = array_filter($requestArray, "strlen");
@@ -62,18 +81,23 @@ class PIExtWriteRequest {
             $this->exceptionWithResponseCode(400, "invalid API URL length");
         }
 
-        $request["APIVersion"] = $requestArray[0];
-        $request["EntityType"] = $requestArray[1];
+        $request[KEY_APIVERSION] = $requestArray[0];
+        $request[KEY_ENTITY_TYPE] = $requestArray[1];
+        $request[KEY_OPERATION] = OPERATION_CREATEORUPDATE; // Default operation
 
         if (!empty($requestContents)) {
             $data = json_decode($requestContents, true);
 
-            if (array_key_exists("APIKey", $data)) {
-                $request["APIKey"] = $data["APIKey"];
+            if (array_key_exists(KEY_APIKEY, $data)) {
+                $request[KEY_APIKEY] = $data[KEY_APIKEY];
             }
 
-            if (array_key_exists("Payload", $data)) {
-                $request["Data"] = $data["Payload"];
+            if (array_key_exists(KEY_OPERATION, $data)) {
+                $request[KEY_OPERATION] = $data[KEY_OPERATION];
+            }
+
+            if (array_key_exists(KEY_DATA, $data)) {
+                $request[KEY_DATA] = $data[KEY_DATA];
             }
         } else {
             $this->exceptionWithResponseCode(400, "content missing");
@@ -83,15 +107,15 @@ class PIExtWriteRequest {
     }
 
     private function verifyRequestData($request) {
-        if (!in_array($request["APIVersion"], $this->supportedAPIVersions)) {
+        if (!in_array($request[KEY_APIVERSION], $this->supportedAPIVersions)) {
             $this->exceptionWithResponseCode(400, "unsupported API version");
         }
 
-        if (!in_array($request["Method"], $this->supportedRequestMethods)) {
-            $this->exceptionWithResponseCode(400, "unsupported request method");
+        if (!in_array($request[KEY_METHOD], $this->supportedRequestMethods)) {
+            $this->exceptionWithResponseCode(405, "unsupported request method");
         }
 
-        if (!in_array($request["EntityType"], $this->supportedEntityTypes)) {
+        if (!in_array($request[KEY_ENTITY_TYPE], $this->supportedEntityTypes)) {
             $this->exceptionWithResponseCode(400, "unsupported entity type");
         }
     }
@@ -102,8 +126,8 @@ class PIExtWriteRequest {
             $this->exceptionWithResponseCode(500, "no GOCDB API key was set in the system");
         }
 
-        if (array_key_exists("APIKey", $request)) {
-            $apiKey = $request["APIKey"];
+        if (array_key_exists(KEY_APIKEY, $request)) {
+            $apiKey = $request[KEY_APIKEY];
             if (strcmp($apiKey, $gocdb_api_key) != 0) {
                 $this->exceptionWithResponseCode(401, "no valid API key was provided");
             }
@@ -112,11 +136,11 @@ class PIExtWriteRequest {
         }
     }
 
-    private function handleRequest($entityType, $method, $data) {
+    private function handleRequest($entityType, $operation, $data) {
         try {
             switch ($entityType) {
-            case "user":
-                return $this->handleUserRequest($method, $data);
+            case ENTITYTYPE_USER:
+                return $this->handleUserRequest($operation, $data);
             }
         } catch (\Exception $e) {
             $this->returnCode = 400;
@@ -126,20 +150,21 @@ class PIExtWriteRequest {
         return null;
     }
 
-    private function handleUserRequest($method, $data) {
+    private function handleUserRequest($operation, $data) {
         $userReq = new UserRequest($this->userService);
         $reply = null;
 
-        switch ($method) {
-        case "POST":
-        case "PUT":
-            // POST and PUT are handled by the same function
+        switch ($operation) {
+        case OPERATION_CREATEORUPDATE:
             $reply = $userReq->createOrUpdateUser($data);
             break;
 
-        case "DELETE":
+        case OPERATION_DELETE:
             $reply = $userReq->deleteUser($data);
             break;
+
+        default:
+            $this->exceptionWithResponseCode(400, "unsupported operation " . $operation);
         }
 
         return $reply;

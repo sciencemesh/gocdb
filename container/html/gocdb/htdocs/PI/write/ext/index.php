@@ -6,18 +6,18 @@ require_once __DIR__ . '/PIExtWriteRequest.php';
 require_once __DIR__ . '/../resultReturnFunctions.php';
 
 $userServ = \Factory::getUserService();
-$requestMethod = $_SERVER['REQUEST_METHOD'];
+$requestMethod = $_SERVER["REQUEST_METHOD"];
 
-if (isset($_REQUEST['request'])) {
-    $baseUrl = $_REQUEST['request'];
+if (isset($_REQUEST["request"])) {
+    $baseUrl = $_REQUEST["request"];
 }
 else {
     $baseUrl = null;
 }
 
-$requestContents = file_get_contents('php://input');
+$requestContents = file_get_contents("php://input");
 
 $piReq = new PIExtWriteRequest($userServ);
 $returnArray = $piReq->processRequest($requestMethod, $baseUrl, $requestContents);
 
-returnJsonWriteAPIResult($returnArray['httpResponseCode'], $returnArray['returnObject']);
+returnJsonWriteAPIResult($returnArray["httpResponseCode"], $returnArray["returnObject"]);
