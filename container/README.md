@@ -27,6 +27,7 @@ The following changes were made to the original GOCDB code:
     - Also apply the same fix to a bunch of other files, just in case...
 - The `GOCDBAuthProvider` used a non-existing class; fix by passing the required reference in the constructor
 - PI: Protect all methods via an API key (env. variable `GOCDB_API_KEY`)
+- Write PI: Extensions for automatically creating/updating/removing user accounts added under `htdocs/PI/write/ext/`; these work independently from the main PI
 
 ## Notes
 To make setting up and working with the GOCDB easy, user authentication was removed. This renders some features unusable, like applying user roles.
