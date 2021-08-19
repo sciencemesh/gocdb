@@ -1,7 +1,7 @@
 # GOCDB Docker Container
 Docker files to provide a containerized version of GOCDB (https://wiki.egi.eu/wiki/GOCDB/Documentation_Index) for the **CS3MESH4EOSC** project.
 
-The `html` directory contains all modified HTML files of the GOCDB that differ from the original version. The `html.dev` directory contains the entire source code of the GOCDB and can be used for custom modifications. To extract all modified files, use the `isolate-modified-files.py` script; these are placed in `html.mod`. It is also possible to reapply all modified files located under `html` to `html.dev` using the `apply-modified-files.py` script.
+The `html` directory contains all modified HTML files of the GOCDB that differ from the original version.
 
 Various configuration files can be found in `config`; these are mainly used to configure the web server of the GOCDB and usually don't need to be modified.
 
@@ -16,6 +16,18 @@ GOCDB offers a comfortable web frontend to manage the topology of a mesh; it als
 - The private API can be reached at: [/gocdbpi/private](http://localhost/gocdbpi/private)
 
 For more details about GOCDB, visit the official documentation [here](https://wiki.egi.eu/wiki/GOCDB/Documentation_Index).
+
+## Changes made
+The following changes were made to the original GOCDB code:
+- Set up `lib/Doctrine/bootstrap_doctrine.php`, allowing configuration via environment variables
+- Add ScienceMesh username/password authentication based on site accounts (see `lib/Authentication/`)
+    - Env. variable `SITEACC_API` used to specify site accounts service URL
+- Allow login via a simple form (located under `/gocdb/login/`; see `htdocs/web_portal/login/`)
+- Fix bug in `lib/Gocdb_Services/Role.php` not updating the Role record ID: After calling `em->persist`, `em->flush` has to be called to set generated values properly
+    - Also apply the same fix to a bunch of other files, just in case...
+- The `GOCDBAuthProvider` used a non-existing class; fix by passing the required reference in the constructor
+- PI: Protect all methods via an API key (env. variable `GOCDB_API_KEY`)
+- Write PI: Extensions for automatically creating/updating/removing user accounts added under `htdocs/PI/write/ext/`; these work independently from the main PI
 
 ## Notes
 To make setting up and working with the GOCDB easy, user authentication was removed. This renders some features unusable, like applying user roles.

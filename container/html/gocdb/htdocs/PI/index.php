@@ -76,6 +76,9 @@ class PIRequest {
     private $baseUrl;
     private $baseApiUrl;
 
+    // New API key based authorization
+    private $apiKey = null;
+
     // params used to set the default behaviour of all paging queries,
     // these vals can be overidden per query if needed.
     // defaultPaging = true means that even if the 'page' URL param is
@@ -115,6 +118,12 @@ class PIRequest {
             unset($_GET['output']);
         }
 
+        // New API key based authorization
+        if (isset($_GET['apikey'])) {
+            $this->apiKey = $_GET['apikey'];
+            unset($_GET['apikey']);
+        }
+
         $testDN = Get_User_Principle_PI();
         if (empty($testDN) == FALSE) {
             $this->dn = $testDN;
@@ -134,7 +143,8 @@ class PIRequest {
             switch ($this->method) {
                 case "get_site":
                     require_once($directory . 'GetSite.php');
-                    $this->authAnyCert();
+                    //$this->authAnyCert();
+                    $this->authAPIKey();
                     $getSite = new GetSite($em, $this->baseUrl, $this->baseApiUrl);
                     $getSite->setDefaultPaging($this->defaultPaging);
                     $getSite->setPageSize($this->defaultPageSize);
@@ -146,6 +156,8 @@ class PIRequest {
                     break;
                 case "get_site_list":
                     require_once($directory . 'GetSite.php');
+                    //$this->authAnyCert();
+                    $this->authAPIKey();
                     $getSite = new GetSite($em);
                     $getSite->validateParameters($this->params);
                     $getSite->createQuery();
@@ -155,7 +167,8 @@ class PIRequest {
                     break;
                 case "get_site_contacts":
                     require_once($directory . 'GetSiteContacts.php');
-                    $this->authAnyCert();
+                    //$this->authAnyCert();
+                    $this->authAPIKey();
                     $getSiteContacts = new GetSiteContacts($em, $this->baseApiUrl);
                     $getSiteContacts->setDefaultPaging($this->defaultPaging);
                     $getSiteContacts->setPageSize($this->defaultPageSize);
@@ -167,7 +180,8 @@ class PIRequest {
                 case "get_site_security_info":
                     require_once($directory . 'GetSiteSecurityInfo.php');
                     //$this->authAcl();
-                    $this->authAnyCert();
+                    //$this->authAnyCert();
+                    $this->authAPIKey();
                     $getSiteSecurityInfo = new GetSiteSecurityInfo($em, $this->baseApiUrl);
                     $getSiteSecurityInfo->setDefaultPaging($this->defaultPaging);
                     $getSiteSecurityInfo->setPageSize($this->defaultPageSize);
@@ -178,6 +192,8 @@ class PIRequest {
                     break;
                 case "get_roc_list":
                     require_once($directory . 'GetNGIList.php');
+                    //$this->authAnyCert();
+                    $this->authAPIKey();
                     $getNGIList = new GetNGIList($em);
                     $getNGIList->validateParameters($this->params);
                     $getNGIList->createQuery();
@@ -186,6 +202,8 @@ class PIRequest {
                     break;
                 case "get_subgrid_list":
                     require_once($directory . 'GetSubGridList.php');
+                    //$this->authAnyCert();
+                    $this->authAPIKey();
                     $getSubGrid = new GetSubGridList($em);
                     $getSubGrid->validateParameters($this->params);
                     $getSubGrid->createQuery();
@@ -194,7 +212,8 @@ class PIRequest {
                     break;
                 case "get_roc_contacts":
                     require_once($directory . 'GetNGIContacts.php');
-                    $this->authAnyCert();
+                    //$this->authAnyCert();
+                    $this->authAPIKey();
                     $getNGIContacts = new GetNGIContacts($em, $this->baseUrl, $this->baseApiUrl);
                     $getNGIContacts->setDefaultPaging($this->defaultPaging);
                     $getNGIContacts->setPageSize($this->defaultPageSize);
@@ -205,6 +224,8 @@ class PIRequest {
                     break;
                 case "get_service":
                     require_once($directory . 'GetService.php');
+                    //$this->authAnyCert();
+                    $this->authAPIKey();
                     $getSE = new GetService($em, $this->baseUrl, $this->baseApiUrl);
                     $getSE->setDefaultPaging($this->defaultPaging);
                     $getSE->setPageSize($this->defaultPageSize);
@@ -215,6 +236,8 @@ class PIRequest {
                     break;
                 case "get_service_endpoint":
                     require_once($directory . 'GetService.php');
+                    //$this->authAnyCert();
+                    $this->authAPIKey();
                     $getSE = new GetService($em, $this->baseUrl, $this->baseApiUrl);
                     $getSE->setDefaultPaging($this->defaultPaging);
                     $getSE->setPageSize($this->defaultPageSize);
@@ -225,6 +248,8 @@ class PIRequest {
                     break;
                 case "get_service_types":
                     require_once($directory . 'GetServiceTypes.php');
+                    //$this->authAnyCert();
+                    $this->authAPIKey();
                     $getST = new GetServiceTypes($em);
                     $getST->validateParameters($this->params);
                     $getST->createQuery();
@@ -233,6 +258,8 @@ class PIRequest {
                     break;
                 case "get_downtime_to_broadcast":
                     require_once($directory . 'GetDowntimesToBroadcast.php');
+                    //$this->authAnyCert();
+                    $this->authAPIKey();
                     $getDTTBroadcast = new GetDowntimeToBroadcast($em, $this->baseUrl, $this->baseApiUrl);
                     $getDTTBroadcast->setDefaultPaging($this->defaultPaging);
                     $getDTTBroadcast->setPageSize($this->defaultPageSize);
@@ -244,6 +271,8 @@ class PIRequest {
                 case "get_downtime":
                     //require_once($directory . 'GetDowntimeFallback.php');
                     require_once($directory . 'GetDowntime.php');
+                    //$this->authAnyCert();
+                    $this->authAPIKey();
                     $getDowntime = new GetDowntime($em, false, $this->baseUrl, $this->baseApiUrl);
                     $getDowntime->setDefaultPaging($this->defaultPaging);
                     $getDowntime->setPageSize($this->defaultPageSize);
@@ -255,6 +284,8 @@ class PIRequest {
                 case "get_downtime_nested_services":
                     //require_once($directory . 'GetDowntimeFallback.php');
                     require_once($directory . 'GetDowntime.php');
+                    //$this->authAnyCert();
+                    $this->authAPIKey();
                     $getDowntime = new GetDowntime($em, true, $this->baseUrl, $this->baseApiUrl);
                     $getDowntime->setDefaultPaging($this->defaultPaging);
                     $getDowntime->setPageSize($this->defaultPageSize);
@@ -265,7 +296,8 @@ class PIRequest {
                     break;
                 case "get_user":
                     require_once($directory . 'GetUser.php');
-                    $this->authAnyCert();
+                    //$this->authAnyCert();
+                    $this->authAPIKey();
                     $getUser = new GetUser($em, \Factory::getRoleActionAuthorisationService(), $this->baseUrl, $this->baseApiUrl);
                     $getUser->setDefaultPaging($this->defaultPaging);
                     $getUser->setPageSize($this->defaultPageSize);
@@ -276,7 +308,8 @@ class PIRequest {
                     break;
                 case "get_project_contacts":
                     require_once($directory . 'GetProjectContacts.php');
-                    $this->authAnyCert();
+                    //$this->authAnyCert();
+                    $this->authAPIKey();
                     $getProjCon = new GetProjectContacts($em, $this->baseApiUrl);
                     $getProjCon->setDefaultPaging($this->defaultPaging);
                     $getProjCon->setPageSize($this->defaultPageSize);
@@ -287,7 +320,8 @@ class PIRequest {
                     break;
                 case "get_ngi":
                     require_once($directory . 'GetNGI.php');
-                    $this->authAnyCert();
+                    //$this->authAnyCert();
+                    $this->authAPIKey();
                     $getNGI = new GetNGI($em, $this->baseApiUrl);
                     $getNGI->setDefaultPaging($this->defaultPaging);
                     $getNGI->setPageSize($this->defaultPageSize);
@@ -298,7 +332,8 @@ class PIRequest {
                     break;
                 case "get_service_group" :
                     require_once($directory . 'GetServiceGroup.php');
-                    $this->authAnyCert();
+                    //$this->authAnyCert();
+                    $this->authAPIKey();
                     $getServiceGroup = new GetServiceGroup($em, $this->baseUrl, $this->baseApiUrl);
                     $getServiceGroup->setDefaultPaging($this->defaultPaging);
                     $getServiceGroup->setPageSize($this->defaultPageSize);
@@ -309,7 +344,8 @@ class PIRequest {
                     break;
                 case "get_service_group_role" :
                     require_once($directory . 'GetServiceGroupRole.php');
-                    $this->authAnyCert();
+                    //$this->authAnyCert();
+                    $this->authAPIKey();
                     $getServiceGroupRole = new GetServiceGroupRole($em, $this->baseUrl, $this->baseApiUrl);
                     $getServiceGroupRole->setDefaultPaging($this->defaultPaging);
                     $getServiceGroupRole->setPageSize($this->defaultPageSize);
@@ -320,7 +356,8 @@ class PIRequest {
                     break;
                 case "get_cert_status_date" :
                     require_once($directory . 'GetCertStatusDate.php');
-                    $this->authAnyCert();
+                    //$this->authAnyCert();
+                    $this->authAPIKey();
                     $getCertStatusDate = new GetCertStatusDate($em, $this->baseApiUrl);
                     $getCertStatusDate->setDefaultPaging($this->defaultPaging);
                     $getCertStatusDate->setPageSize($this->defaultPageSize);
@@ -331,7 +368,8 @@ class PIRequest {
                     break;
                 case "get_cert_status_changes":
                     require_once($directory . 'GetCertStatusChanges.php');
-                    $this->authAnyCert();
+                    //$this->authAnyCert();
+                    $this->authAPIKey();
                     $getCertStatusChanges = new GetCertStatusChanges($em, $this->baseApiUrl);
                     $getCertStatusChanges->setDefaultPaging($this->defaultPaging);
                     $getCertStatusChanges->setPageSize($this->defaultPageSize);
@@ -342,6 +380,8 @@ class PIRequest {
                     break;
                 case "get_site_count_per_country":
                     require_once($directory . 'GetSiteCountPerCountry.php');
+                    //$this->authAnyCert();
+                    $this->authAPIKey();
                     $GetSiteCountPerCountry = new GetSiteCountPerCountry($em);
                     $GetSiteCountPerCountry->validateParameters($this->params);
                     $GetSiteCountPerCountry->createQuery();
@@ -378,14 +418,22 @@ class PIRequest {
     /* Authorize a user based on their certificate */
 
     function authAnyCert() {
-        /*
         if (empty($this->dn))
-            die("<No valid certificate found. A trusted certificate is " .
+            die("No valid certificate found. A trusted certificate is " .
                     "required to access this resource. Try accessing the " .
                     "resource through the private interface.");
-        */
     }
 
+    // New API key based authorization
+    function authAPIKey() {
+        $gocdb_api_key = getenv("GOCDB_API_KEY");
+        if ($gocdb_api_key == false)
+            die("No GOCDB API key was set in the system.");
+
+        if (strcmp($this->apiKey, $gocdb_api_key) != 0) {
+            die("No valid API key was provided. An API key is required to access this resource.");
+        }
+    }
 }
 
 ?>
